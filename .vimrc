@@ -36,7 +36,6 @@ let g:Powerline_symbols = "compatible"
 
 set guifont=inconsolata-dz\ 10
 
-set t_Co=256
 set background=dark
 colorscheme solarized
 if has("gui_running")

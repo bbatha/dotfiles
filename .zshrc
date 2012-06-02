@@ -51,7 +51,7 @@ setopt NO_HUP
 setopt VI
 
 # only fools wouldn't do this ;-)
-export EDITOR="vi"
+export EDITOR="vim"
 
 
 setopt IGNORE_EOF
@@ -171,7 +171,7 @@ alias -g L="| less"
 #{{{ Suffixes...
 
 if [[ $DISPLAY = '' ]] then
-  alias -s txt=vi
+  alias -s txt=vim
 else
   alias -s txt=gvim
 fi
@@ -182,7 +182,7 @@ fi
 
 #{{{ Completion Stuff
 
-bindkey -M viins '\C-i' complete-word
+bindkey -M emacs '\C-i' complete-word
 
 # Faster! (?)
 zstyle ':completion::complete:*' use-cache 1
@@ -249,45 +249,46 @@ bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 
 # Incremental search is elite!
-bindkey -M vicmd "/" history-incremental-search-backward
-bindkey -M vicmd "?" history-incremental-search-forward
-
-# Search based on what you typed in already
-bindkey -M vicmd "//" history-beginning-search-backward
-bindkey -M vicmd "??" history-beginning-search-forward
-
+#bindkey -M vicmd "/" history-incremental-search-backward
+#bindkey -M vicmd "?" history-incremental-search-forward
+#
+## Search based on what you typed in already
+#bindkey -M vicmd "//" history-beginning-search-backward
+#bindkey -M vicmd "??" history-beginning-search-forward
+#
 bindkey "\eOP" run-help
 
 # oh wow!  This is killer...  try it!
-bindkey -M vicmd "q" push-line
+#bindkey -M vicmd "q" push-line
 
 # Ensure that arrow keys work as they should
-bindkey '\e[A' up-line-or-history
-bindkey '\e[B' down-line-or-history
+#bindkey '\e[A' up-line-or-history
+#bindkey '\e[B' down-line-or-history
+#
+#bindkey '\eOA' up-line-or-history
+#bindkey '\eOB' down-line-or-history
+#
+#bindkey '\e[C' forward-char
+#bindkey '\e[D' backward-char
+#
+#bindkey '\eOC' forward-char
+#bindkey '\eOD' backward-char
 
-bindkey '\eOA' up-line-or-history
-bindkey '\eOB' down-line-or-history
-
-bindkey '\e[C' forward-char
-bindkey '\e[D' backward-char
-
-bindkey '\eOC' forward-char
-bindkey '\eOD' backward-char
-
-bindkey -M viins 'jj' vi-cmd-mode
-bindkey -M vicmd 'u' undo
+#bindkey -M viins 'jj' vi-cmd-mode
+#bindkey -M vicmd 'u' undo
 
 # Rebind the insert key.  I really can't stand what it currently does.
 bindkey '\e[2~' overwrite-mode
 
 # Rebind the delete key. Again, useless.
-bindkey '\e[3~' delete-char
+#bindkey '\e[3~' delete-char
 
-bindkey -M vicmd '!' edit-command-output
+#bindkey -M vicmd '!' edit-command-output
 
 # it's like, space AND completion.  Gnarlbot.
-bindkey -M viins ' ' magic-space
+#bindkey -M viins ' ' magic-space
 
+bindkey -e
 #}}}
 
 #{{{ History Stuff
@@ -446,7 +447,7 @@ zle -N edit-command-output
 #exec 2>>(while read line; do
 #print '\e[91m'${(q)line}'\e[0m' > /dev/tty; done &)
 
-watch=(notme)
+#watch=(notme)
 LOGCHECK=0
 
 #}}}
@@ -459,3 +460,4 @@ promptinit
 zsh-mime-setup
 
 #}}}
+alias submodule-update="git submodule foreach git pull"
