@@ -182,8 +182,6 @@ fi
 
 #{{{ Completion Stuff
 
-bindkey -M emacs '\C-i' complete-word
-
 # Faster! (?)
 zstyle ':completion::complete:*' use-cache 1
 
@@ -458,6 +456,7 @@ autoload -U compinit promptinit zcalc zsh-mime-setup
 compinit
 promptinit
 zsh-mime-setup
+
 
 #}}}
 alias submodule-update="git submodule foreach git pull"
