@@ -34,7 +34,7 @@ au InsertEnter * match ExtraWhitespace /\S\zs\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\S\zs\s\+$/
 let g:Powerline_symbols = "compatible"
 
-set guifont=inconsolata-dz\ 10
+""set guifont=inconsolata-dz\ 10
 
 set background=dark
 colorscheme solarized
@@ -110,7 +110,7 @@ let Tlist_Compact_Format = 0
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Process_File_Always = 1
 let Tlist_Use_Right_Window = 1
-let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+let Tlist_Ctags_Cmd = '/usr/bin/ctags'
 """"""""""""""""""""""""""""""""""""""""
 "" Syntastic-specific config settings
 """"""""""""""""""""""""""""""""""""""""
@@ -154,4 +154,4 @@ augroup SimultaneousEdits
 	autocmd SwapExists * :let v:swapchoice = 'e'
 augroup END
 """" GO
-set rtp+=$GOROOT/msic/vim
+""set rtp+=$GOROOT/msic/vim
