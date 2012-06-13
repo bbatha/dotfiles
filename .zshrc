@@ -135,30 +135,30 @@ alias ls='ls -hF --color=auto'
 
 #{{{ Package management
 
-if [[ -x =aptitude ]]; then
-  alias attd="sudo xterm -C aptitude"
-else
-  if [[ -x =emerge ]]; then
-    alias emu='sudo emerge -uDN world'
-    alias emup='sudo emerge -uDvpN world'
-    alias esy='sudo emerge --sync'
-    alias ei='sudo emerge'
-    alias eip='sudo emerge -vp '
-    alias packmask='sudo vi /etc/portage/package.unmask'
-    alias packuse='sudo vi /etc/portage/package.use'
-    alias packkey='sudo vi /etc/portage/package.keywords'
-  fi
-fi
-
-#}}}
-
-# Convenient.  Also works in Gentoo or Ubuntu
-if [[ -x `which irb1.8` ]]; then
-  alias irb='irb1.8 --readline -r irb/completion'
-else
-  alias irb='irb --readline -r irb/completion'
-fi
-
+#if [[ -x =aptitude ]]; then
+#  alias attd="sudo xterm -C aptitude"
+#else
+#  if [[ -x =emerge ]]; then
+#    alias emu='sudo emerge -uDN world'
+#    alias emup='sudo emerge -uDvpN world'
+#    alias esy='sudo emerge --sync'
+#    alias ei='sudo emerge'
+#    alias eip='sudo emerge -vp '
+#    alias packmask='sudo vi /etc/portage/package.unmask'
+#    alias packuse='sudo vi /etc/portage/package.use'
+#    alias packkey='sudo vi /etc/portage/package.keywords'
+#  fi
+#fi
+#
+##}}}
+#
+## Convenient.  Also works in Gentoo or Ubuntu
+#if [[ -x `which irb1.8` ]]; then
+#  alias irb='irb1.8 --readline -r irb/completion'
+#else
+#  alias irb='irb --readline -r irb/completion'
+#fi
+#
 #}}}
 
 #{{{ Globals...
@@ -338,7 +338,7 @@ compinit
 autoload -U colors
 colors
 setopt PROMPT_SUBST
-export PROMPT="[%(!.%F{red}.%F{cyan})%n%f@%F{yellow}%m%f%(!.%F{red}.) %1/]%# "
+export PROMPT="[%(!..)%n%f@%m%f%(!..) %1/]%# "
 
 ##{{{ Prompt!
 #

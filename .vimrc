@@ -12,7 +12,7 @@ set nobackup
 
 """"DISPLAY
 set laststatus=2
-set nu
+set relativenumber
 set ruler
 set showcmd
 set showmatch
