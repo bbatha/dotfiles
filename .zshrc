@@ -85,7 +85,6 @@ export RI="--format ansi"
 declare -U path
 
 #export LANG=en_US
-export PAGER=most
 #}}}
 
 #{{{ External Files
@@ -126,7 +125,6 @@ HELPDIR=~/zsh_help
 alias sz='source ~/.zshrc'
 alias ez='vim ~/.zshrc'
 alias mk=popd
-alias ls='ls -hF'
 
 #}}}
 
@@ -212,7 +210,7 @@ unsetopt LIST_AMBIGUOUS
 setopt  COMPLETE_IN_WORD
 
 # Separate man page sections.  Neat.
-#zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals' separate-sections true
 
 # Egomaniac!
 zstyle ':completion:*' list-separator 'fREW'
