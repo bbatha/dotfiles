@@ -31,3 +31,9 @@
 [submodule ".vim/bundle/vim-colors-solarized"]
 	path = .vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule ".vim/bundle/neocomplecache"]
+	path = .vim/bundle/neocomplecache
+	url = git://github.com/Shougo/neocomplcache.git
+[submodule ".vim/bundle/neocomplecache-snippets-complete"]
+	path = .vim/bundle/neocomplecache-snippets-complete
+	url = git://github.com/Shougo/neocomplcache-snippets-complete.git

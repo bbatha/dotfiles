@@ -80,9 +80,6 @@ setopt RC_EXPAND_PARAM
 #}}}
 
 #{{{ Variables
-export MATHPATH="$MANPATH:/usr/local/texlive/2007/texmf/doc/man"
-export INFOPATH="$INFOPATH:/usr/local/texlive/2007/texmf/doc/info"
-export PATH="$PATH:/usr/local/texlive/2007/bin/i386-linux"
 export RI="--format ansi"
 
 declare -U path
@@ -129,7 +126,7 @@ HELPDIR=~/zsh_help
 alias sz='source ~/.zshrc'
 alias ez='vim ~/.zshrc'
 alias mk=popd
-alias ls='ls -hF --color=auto'
+alias ls='ls -hF'
 
 #}}}
 
@@ -215,7 +212,7 @@ unsetopt LIST_AMBIGUOUS
 setopt  COMPLETE_IN_WORD
 
 # Separate man page sections.  Neat.
-zstyle ':completion:*:manuals' separate-sections true
+#zstyle ':completion:*:manuals' separate-sections true
 
 # Egomaniac!
 zstyle ':completion:*' list-separator 'fREW'
