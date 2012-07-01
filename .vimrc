@@ -69,7 +69,7 @@ set whichwrap+=<,>,h,l   " cursor keys also wrap
 set softtabstop=4
 set tabstop=4
 set shiftwidth=4
-""set expandtab
+set expandtab
 
 set autoread     " automatically reload a file if it's changed outside vim
 
