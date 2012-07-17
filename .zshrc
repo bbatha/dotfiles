@@ -447,6 +447,7 @@ LOGCHECK=0
 
 #{{{ ZSH Modules
 
+export PAGER=less
 autoload -U compinit promptinit zcalc zsh-mime-setup
 compinit
 promptinit
@@ -454,4 +455,4 @@ zsh-mime-setup
 
 
 #}}}
-alias submodule-update="git submodule foreach git pull"
+alias submodule-update='git submodule foreach "(git checkout master; git pull)&"'

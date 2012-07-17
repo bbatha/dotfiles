@@ -1,4 +1,5 @@
 """" BASICS
+filetype off
 call pathogen#infect()
 syntax on
 filetype plugin indent on
@@ -35,7 +36,7 @@ au InsertLeave * match ExtraWhiteSpace /\S\zs\s\+$/
 set fillchars+=stl:\ ,stlnc:\
 let g:Powerline_symbols = 'fancy'
 
-""set guifont=inconsolata-dz\ 10
+set guifont=inconsolata-dz\ for\ Powerline\ 10
 
 set background=dark
 colorscheme solarized
@@ -101,6 +102,11 @@ autocmd BufReadPost *
 			\ exe "normal! g`\"" |
 			\ endif
 
+""Haskell
+au BufEnter *.hs compiler ghc
+let g:haddock_browser = '/usr/bin/firefox'
+let g:ghc = '/home/bbatha/local/bin/ghc'
+
 
 """"TAGLIST
 let Tlist_Auto_Highlight_Tag = 1
@@ -111,7 +117,7 @@ let Tlist_Compact_Format = 0
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Process_File_Always = 1
 let Tlist_Use_Right_Window = 1
-let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+let Tlist_Ctags_Cmd = '/usr/bin/ctags'
 """"""""""""""""""""""""""""""""""""""""
 "" Syntastic-specific config settings
 """"""""""""""""""""""""""""""""""""""""
