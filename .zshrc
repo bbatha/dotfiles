@@ -455,4 +455,4 @@ zsh-mime-setup
 
 
 #}}}
-alias submodule-update='git submodule foreach "(git checkout master; git pull)&"'
+alias submodule-update='git submodule foreach git pull' 
