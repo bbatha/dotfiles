@@ -37,3 +37,15 @@
 [submodule ".vim/bundle/neocomplecache-snippets-complete"]
 	path = .vim/bundle/neocomplecache-snippets-complete
 	url = git://github.com/Shougo/neocomplcache-snippets-complete.git
+[submodule ".vim/bundles/haskellmode-vim"]
+	path = .vim/bundles/haskellmode-vim
+	url = git://github.com/johntyree/haskellmode-vim.git
+[submodule ".vim/bundle/haskellmode-vim"]
+	path = .vim/bundle/haskellmode-vim
+	url = git://github.com/johntyree/haskellmode-vim.git
+[submodule ".vim/bundle/neco-ghc"]
+	path = .vim/bundle/neco-ghc
+	url = git://github.com/ujihisa/neco-ghc.git
+[submodule ".vim/bundle/vim-hoogle"]
+	path = .vim/bundle/vim-hoogle
+	url = git://github.com/Twinside/vim-hoogle.git
