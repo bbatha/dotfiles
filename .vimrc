@@ -1,10 +1,32 @@
 """" BASICS
+set nocompatible
 filetype off
-call pathogen#infect()
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
+
+Bundle 'AutoClose'
+Bundle 'camelcasemotion'
+Bundle 'tpope/vim-surround'
+Bundle 'johntyree/haskellmode-vim'
+Bundle 'Shougo/neocomplcache'
+Bundle 'ujihisa/neco-ghc'
+Bundle 'Shougo/neosnippet'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/syntastic'
+Bundle 'taglist.vim'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'Twinside/vim-hoogle'
+Bundle 'Lokaltog/vim-powerline'
+
+
+
+
+
+
 syntax on
 filetype plugin indent on
 set hidden
-set nocompatible
 set encoding=utf-8
 set fileformat=unix
 set history=100
