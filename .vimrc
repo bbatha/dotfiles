@@ -60,22 +60,24 @@ set pastetoggle=<F2>
 " typing in insert mode!
 highlight ExtraWhitespace ctermbg=red guibg=Brown
 match ExtraWhitespace /\s\+$/
-"au ColorScheme * highlight ExtraWhitespace guibg=red
-"au BufEnter * match ExtraWhitespace /\S\zs\s\+$/
-"au InsertEnter * match ExtraWhitespace /\S\zs\s\+\%#\@<!$/
-"au InsertLeave * match ExtraWhiteSpace /\S\zs\s\+$/
-"set fillchars+=stl:\ ,stlnc:\
-""let g:Powerline_symbols = 'fancy'
+au ColorScheme * highlight ExtraWhitespace guibg=red
+au BufEnter * match ExtraWhitespace /\S\zs\s\+$/
+au InsertEnter * match ExtraWhitespace /\S\zs\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhiteSpace /\S\zs\s\+$/
+set fillchars+=stl:\ ,stlnc:\
+let g:Powerline_symbols = 'fancy'
 
-"set guifont=inconsolata-dz\ for\ Powerline\ 10
-
-"let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
 if has("gui_running")
+  set guifont=inconsolata-dz\ for\ Powerline\ 10
   set guioptions=ac
   set lines=60
+  let g:solarized_termcolors=256
+else
+  let g:solarized_termcolors=16
 endif
+
+set background=dark
+colorscheme solarized
 
 """"""""""""""""""""""""""""""""""""""""
 "" This file manages all global editing
