@@ -23,6 +23,7 @@ Bundle 'SirVer/ultisnips'
 Bundle 'pangloss/vim-javascript'
 Bundle 'mustache/vim-mustache-handlebars'
 Bundle 'mattn/emmet-vim'
+Bundle 'sql.vim'
 Bundle 'tpope/vim-unimpaired'
 
 syntax on
@@ -214,6 +215,5 @@ au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:U
 "let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 
-
 ""SQL default to postgresql
-""let g:sql_type_default='postgresql'
+let g:sql_type_default='postgresql'
