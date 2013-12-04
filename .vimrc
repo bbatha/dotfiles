@@ -215,5 +215,6 @@ au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:U
 "let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 
+let g:javascript_enable_domhtmlcss = 1
 ""SQL default to postgresql
 let g:sql_type_default='postgresql'
