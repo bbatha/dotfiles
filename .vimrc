@@ -20,7 +20,10 @@ Bundle 'tpope/vim-haml'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'SirVer/ultisnips'
-"Bundle 'sql.vim'
+Bundle 'pangloss/vim-javascript'
+Bundle 'mustache/vim-mustache-handlebars'
+Bundle 'mattn/emmet-vim'
+Bundle 'tpope/vim-unimpaired'
 
 syntax on
 filetype plugin indent on
