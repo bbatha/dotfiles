@@ -21,3 +21,5 @@ if [ $(uname -n | grep -c .lanl.gov) = 1 ]; then
     export CPPFLAGS=-I$HOME/local/include
     export CC=/usr/lanl/bin/gcc
 fi
+
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit" 
