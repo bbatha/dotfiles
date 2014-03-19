@@ -1,30 +1,38 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
-" let Vundle manage Vundle
+call neobundle#rc(expand('~/.vim/bundle/'))
+
+" let NeoBundle manage NeoBundle
 " required!
-Bundle 'gmarik/vundle'
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-Bundle 'camelcasemotion'
-Bundle 'tpope/vim-surround'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'taglist.vim'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'matchit.zip'
-Bundle 'ruby-matchit'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-haml'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
-Bundle 'SirVer/ultisnips'
-Bundle 'pangloss/vim-javascript'
-Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'mattn/emmet-vim'
-Bundle 'sql.vim'
-Bundle 'tpope/vim-unimpaired'
+NeoBundle 'camelcasemotion'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'taglist.vim'
+NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'matchit.zip'
+NeoBundle 'ruby-matchit'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-haml'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'mustache/vim-mustache-handlebars'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'sql.vim'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+
+
+NeoBundleCheck
 
 syntax on
 filetype plugin indent on
@@ -56,19 +64,29 @@ set pastetoggle=<F2>
 ""FACTSET SKELETONS
 ""source /home/fonix/prd_progs/tools/conf/vim/fds.vimrc
 
-" Highlight trailing whitespace in vim on non empty lines, but not while
-" typing in insert mode!
-highlight ExtraWhitespace ctermbg=red guibg=Brown
-match ExtraWhitespace /\s\+$/
-au ColorScheme * highlight ExtraWhitespace guibg=red
-au BufEnter * match ExtraWhitespace /\S\zs\s\+$/
-au InsertEnter * match ExtraWhitespace /\S\zs\s\+\%#\@<!$/
-au InsertLeave * match ExtraWhiteSpace /\S\zs\s\+$/
-set fillchars+=stl:\ ,stlnc:\
-let g:Powerline_symbols = 'fancy'
+" Highlight EOL whitespace, http://vim.wikia.com/wiki/Highlight_unwanted_spaces
+highlight ExtraWhitespace ctermbg=darkred guibg=#382424
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+
+" The above flashes annoyingly while typing, be calmer in insert mode
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+
+function! s:FixWhitespace(line1,line2)
+    let l:save_cursor = getpos(".")
+    silent! execute ':' . a:line1 . ',' . a:line2 . 's/\s\+$//'
+    call setpos('.', l:save_cursor)
+endfunction
+
+" Run :FixWhitespace to remove end of line white space
+command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
+
+
+"let g:Powerline_symbols = 'fancy'
 
 if has("gui_running")
-  set guifont=inconsolata-dz\ for\ Powerline\ 10
+  "set guifont=inconsolata-dz\ for\ Powerline\ 10
   set guioptions=ac
   set lines=60
   let g:solarized_termcolors=256
@@ -189,34 +207,109 @@ augroup END
 """""""""""""""
 runtime macros/matchit.vim
 
-""YCM
-let g:ycm_key_invoke_completion = '<C-Space>'
-
 ""Syntastic
 nnoremap <leader>e :Errors<CR>
 nnoremap <leader>n :lnext<CR>
 nnoremap <leader>N :lprev<CR>
+let g:syntastic_enable_balloons = 0
 
-""Ultisnips conflicts with YCM -- fix that
-function! g:UltiSnips_Complete()
-  call UltiSnips_ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips_JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif
-  endif
-  return ""
+"" Neocomplete
+""""""""""""""""""""""""""""
+"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-"let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
+" For cursor moving in insert mode(Not recommended)
+"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+" Or set this.
+"let g:neocomplete#enable_cursor_hold_i = 1
+" Or set this.
+"let g:neocomplete#enable_insert_char_pre = 1
 
-let g:javascript_enable_domhtmlcss = 1
-""SQL default to postgresql
-let g:sql_type_default='postgresql'
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType ruby setlocal omnifunc=rubycomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+
+" https://github.com/c9s/perlomni.vim
+"let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" NeoSnippet
+""""""""""""
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
