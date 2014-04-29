@@ -15,7 +15,7 @@ NeoBundle 'camelcasemotion'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'taglist.vim'
-NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'bling/vim-airline'
 NeoBundle 'matchit.zip'
 NeoBundle 'ruby-matchit'
 NeoBundle 'tpope/vim-repeat'
@@ -30,7 +30,14 @@ NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } 
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
-
+NeoBundle 'rking/ag.vim'
+NeoBundle 'vim-perl/vim-perl',
+      \   { 'build' :
+      \      { 'unix':
+      \        'mkdir -p $HOME/.vim/after/syntax/perl; ln -s $HOME/.vim/bundle/vim-perl/contrib/* $HOME/.vim/after/syntax/perl/.'
+      \      }
+      \    }
+NeoBundle 'c9s/perlomni.vim'
 
 NeoBundleCheck
 
@@ -82,8 +89,21 @@ endfunction
 " Run :FixWhitespace to remove end of line white space
 command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 
+" Airline
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
 
-"let g:Powerline_symbols = 'fancy'
+let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+let g:airline_symbols.branch = '⭠'
+let g:airline_symbols.readonly = '⭤'
+let g:airline_symbols.linenr = '⭡'
+let g:airline_theme = 'powerlineish'
+
+"For more intricate customizations, you can replace the predefined sections
 
 if has("gui_running")
   "set guifont=inconsolata-dz\ for\ Powerline\ 10
@@ -175,6 +195,8 @@ let Tlist_Process_File_Always = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_Ctags_Cmd = '/usr/bin/ctags'
 
+let g:agprg="$HOME/local/bin/ag --column"
+
 
 """"""""""""""""""""""""""""""""""""""""
 "" settings controlling temporary/backup files
@@ -225,6 +247,8 @@ let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" Disable slows down vim way to much on largish files
+let g:neocomplete#enable_fuzzy_complete = 0
 
 
 
@@ -292,7 +316,7 @@ endif
 " For perlomni.vim setting.
 
 " https://github.com/c9s/perlomni.vim
-"let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " NeoSnippet
 """"""""""""
