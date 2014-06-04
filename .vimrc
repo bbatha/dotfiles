@@ -31,12 +31,6 @@ NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'rking/ag.vim'
-NeoBundle 'vim-perl/vim-perl',
-      \   { 'build' :
-      \      { 'unix':
-      \        'mkdir -p $HOME/.vim/after/syntax/perl; ln -s $HOME/.vim/bundle/vim-perl/contrib/* $HOME/.vim/after/syntax/perl/.'
-      \      }
-      \    }
 NeoBundle 'c9s/perlomni.vim'
 
 NeoBundleCheck
