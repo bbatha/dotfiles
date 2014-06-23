@@ -32,6 +32,10 @@ NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'c9s/perlomni.vim'
+NeoBundle 'henrik/vim-qargs'
+NeoBundle 'eagletmt/ghcmod-vim'
+NeoBundle 'eagletmt/neco-ghc'
+NeoBundle 'dag/vim2hs'
 
 NeoBundleCheck
 
@@ -73,6 +77,9 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 " The above flashes annoyingly while typing, be calmer in insert mode
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+
+" Fix quickfix list to wrap
+autocmd FileType qf setlocal wrap linebreak
 
 function! s:FixWhitespace(line1,line2)
     let l:save_cursor = getpos(".")
@@ -189,7 +196,7 @@ let Tlist_Process_File_Always = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_Ctags_Cmd = '/usr/bin/ctags'
 
-let g:agprg="$HOME/local/bin/ag --column"
+let g:agprg='ag --column'
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -228,6 +235,9 @@ nnoremap <leader>e :Errors<CR>
 nnoremap <leader>n :lnext<CR>
 nnoremap <leader>N :lprev<CR>
 let g:syntastic_enable_balloons = 0
+" potentially risky. it will run BEGIN, UNITCHECK, CHECK blocks and use
+" statements
+let g:syntastic_enable_perl_checker = 1
 
 "" Neocomplete
 """"""""""""""""""""""""""""
@@ -251,7 +261,7 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
     \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+    \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -297,7 +307,6 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" autocmd FileType ruby setlocal omnifunc=rubycomplete#CompleteTags
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -331,3 +340,8 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+" vim2hs
+let g:haskell_conceal = 0
+let g:haskell_conceal_enumerations = 0
+let g:haskell_tabular = 0
