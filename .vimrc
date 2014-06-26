@@ -11,31 +11,30 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " required!
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'camelcasemotion'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'taglist.vim'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'matchit.zip'
-NeoBundle 'ruby-matchit'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-haml'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'mustache/vim-mustache-handlebars'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'sql.vim'
-NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'camelcasemotion' " Motion for camelcase words
+NeoBundle 'tpope/vim-surround' " edit surronding tags of text object
+NeoBundle 'altercation/vim-colors-solarized' " pretty colors
+NeoBundle 'bling/vim-airline' " pretty status bar
+NeoBundle 'matchit.zip' " better % matching
+NeoBundle 'ruby-matchit' " match 'end'
+NeoBundle 'tpope/vim-repeat' " fix repeat for use with common plugins
+NeoBundle 'tpope/vim-haml' " haml syntax highlighting
+NeoBundle 'scrooloose/syntastic' " syntax checker
+NeoBundle 'pangloss/vim-javascript' " better js highlighting/indenting
+NeoBundle 'mustache/vim-mustache-handlebars' " mustache/handlebars template support
+NeoBundle 'mattn/emmet-vim' " expand css style tags to html
+NeoBundle 'sql.vim' " better sql support
+"VIMPROC Execute things remotely -- speeds up a lot of plugins
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'c9s/perlomni.vim'
-NeoBundle 'henrik/vim-qargs'
+NeoBundle 'Shougo/neocomplete.vim' " completion engine
+NeoBundle 'Shougo/neosnippet.vim' " snippet engine for neocomplete
+NeoBundle 'Shougo/neosnippet-snippets' " snippets for neosnippet
+NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
+NeoBundle 'c9s/perlomni.vim' " better perl completion engine
+" GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'eagletmt/neco-ghc'
-NeoBundle 'dag/vim2hs'
+NeoBundle 'eagletmt/neco-ghc' " integrate ghcmod with neocomplete
+NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
 
 NeoBundleCheck
 
@@ -185,16 +184,6 @@ autocmd BufReadPost *
       \ endif
 ""Enable repeat.vim
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
-""TAGLIST
-let Tlist_Auto_Highlight_Tag = 1
-let Tlist_Auto_Open = 0
-let Tlist_Auto_Update = 1
-let Tlist_Close_On_Select = 0
-let Tlist_Compact_Format = 0
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Process_File_Always = 1
-let Tlist_Use_Right_Window = 1
-let Tlist_Ctags_Cmd = '/usr/bin/ctags'
 
 let g:agprg='ag --column'
 
@@ -278,9 +267,8 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
+
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
@@ -288,18 +276,6 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplete#enable_cursor_hold_i = 1
-" Or set this.
-"let g:neocomplete#enable_insert_char_pre = 1
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
