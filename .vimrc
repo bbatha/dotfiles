@@ -27,14 +27,13 @@ NeoBundle 'sql.vim' " better sql support
 "VIMPROC Execute things remotely -- speeds up a lot of plugins
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
 NeoBundle 'Shougo/neocomplete.vim' " completion engine
-NeoBundle 'Shougo/neosnippet.vim' " snippet engine for neocomplete
-NeoBundle 'Shougo/neosnippet-snippets' " snippets for neosnippet
 NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 NeoBundle 'c9s/perlomni.vim' " better perl completion engine
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'eagletmt/neco-ghc' " integrate ghcmod with neocomplete
 NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
+NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
 
 NeoBundleCheck
 
@@ -89,29 +88,32 @@ endfunction
 " Run :FixWhitespace to remove end of line white space
 command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 
-" Airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
 
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
 let g:airline_theme = 'powerlineish'
 
-"For more intricate customizations, you can replace the predefined sections
-
 if has("gui_running")
-  "set guifont=inconsolata-dz\ for\ Powerline\ 10
+  set guifont=Meslo\ LG\ S\ DZ\ for\ Powerline\ Medium\ 10
   set guioptions=ac
+  set columns=120
   set lines=60
   let g:solarized_termcolors=256
 else
   let g:solarized_termcolors=16
+
+  " Airline
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+
+  let g:airline_left_sep = '⮀'
+  let g:airline_left_alt_sep = '⮁'
+  let g:airline_right_sep = '⮂'
+  let g:airline_right_alt_sep = '⮃'
+  let g:airline_symbols.branch = '⭠'
+  let g:airline_symbols.readonly = '⭤'
+  let g:airline_symbols.linenr = '⭡'
+
+  "For more intricate customizations, you can replace the predefined sections
 endif
 
 set background=dark
@@ -297,27 +299,15 @@ endif
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
-" NeoSnippet
-""""""""""""
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
 " vim2hs
 let g:haskell_conceal = 0
 let g:haskell_conceal_enumerations = 0
 let g:haskell_tabular = 0
+
+" ctrlp
+let g:ctrlp_custom_ignore= {
+  \ 'dir': '\v[\/](\.(git|hg|svn))|(node_modules|vendor|bin|rint)$',
+  \ 'file': '\v\.(exe|so|dll)$'
+  \ }
+
+let g:ctrlp_root_markers = ['.p4rc']
