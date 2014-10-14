@@ -1,0 +1,121 @@
+#ident	"@(#)profile-user	0.9	01/07/08 FDS"
+#
+#	This is the default standard profile provided to users.
+#	They are expected to edit it to meet their own needs.
+#
+if [ -e /var/cfengine/classes/nextgen ]
+then
+  source /home/fonix/prd_progs/tools/engineering-login.sh
+fi
+
+# don't get booted for inactivity
+unset autologout
+
+export DISPLAY=`whoami`pc.pc.factset.com:0.0
+
+# Load directory color maps
+[[ -f $HOME/.dir_colors ]] && eval `dircolors ${HOME}/.dir_colors`
+
+# Better ssh interrupt support. Causes less hangs
+stty -ixon -ixoff
+
+# Use the unix standard editor
+export EDITOR=vim
+export P4EDITOR=vim
+export P4MERGE=vimdiff
+
+# : user@hostname[$PWD] ;
+# use : PS1 ; format so that it can be a no-op when pasted
+export PS1=": \u@\h:[\W]; "
+# set ps2 for easy mutiline pastes
+export PS2=" "
+
+
+# Retain bash history like zsh
+shopt -s histappend
+export HISTSIZE=100000
+export HISTCONTROL=ignoredups:erasedups
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+
+# fix linewrapping
+shopt -s checkwinsize
+
+# These two should be set already but I set them explicitly
+# and I don't know why. Leaving them there for now
+export LANG=en_US.UTF-8
+export P4USER=bbatha
+
+export PREFIX=$HOME/local
+
+# Dynamic language modules
+export PYTHONPATH=$HOME/local/lib/python2.6/site-packages:$PYTHONPATH
+
+# Add local rubygems, node_modules, and built bins
+LOCALPATH=$HOME/.rbenv/bin
+LOCALPATH=$PREFIX/bin:$LOCALPATH
+LOCALPATH=$HOME/.cabal/bin:$LOCALPATH
+export PATH=$LOCALPATH:$PATH
+
+# rbenv
+eval "$(rbenv init -)"
+
+# perlbrew
+source ~/perl5/perlbrew/etc/bashrc
+
+# Misc env for building custom --prefix packages
+export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$PREFIX/lib:$LIBRARY_PATH
+export MANPATH=$PREFIX/man:$MANPATH
+export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+
+#Scratch directory
+export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
+
+# Aliases for setting up env for configure scripts
+alias config_local='CFLAGS="-I$PREFIX/include" LDFLAGS="-L$PREFIX/lib" ./configure --prefix=$PREFIX'
+# Turn on everything for vim builds except for gui things. Tmux breaks $DISPLAY
+# and you get annoying warnings everytime you do anything with vim if you build
+# any gui support in
+alias config_vim='CFLAGS="-I$PREFIX/include/luajit-2.0 -I$PREFIX/include" LDFLAGS="-L$PREFIX/lib" ./configure --prefix=$PREFIX --with-features=huge --enable-luainterp --with-luajit --with-lua-prefix=$PREFIX --enable-rubyinterp --enable-perlinterp --enable-pythoninterp'
+# PhantomJS sucks and doesn't use $PATH
+export PHANTOMJS_BIN=$PREFIX/bin/phantomjs
+
+# p4fds is an abomination. Nuke it from orbit
+unalias p4 >/dev/null 2>/dev/null
+# review board uploadeer
+alias rb='perl /home/data/index/script/common/submit_review_board.pl'
+# use ls colors and prefix symbols for executable, and folders
+alias ls='ls -hF --color=auto'
+# enable x forwarding fwiw
+alias ssh='ssh -X'
+# pub build tool
+alias pub='/home/dev/build/pub/bin/pub'
+# disable cores for tmux
+alias tmux='ulimit -c 0; command tmux'
+# typing in bundle exec all the time is annoying
+alias be='bundle exec'
+
+# this is how you hack aliases for subcommands
+# for p4 we want to intercept vdiff and launch vimdiff instead
+# of using the normal gdiff
+function p4() {
+  case $* in
+    vdiff2* ) shift 1; P4DIFF=vimdiff command p4 diff2 "$@" ;;
+    vdiff* ) shift 1; P4DIFF=vimdiff command p4 diff "$@" ;;
+    * ) command p4 "$@" ;;
+  esac
+}
+
+function ruby-build() {
+  command ruby-build $1
+}
+
+# Add our bash completion scripts
+if [[ $PS1 && -f $HOME/local/share/bash-completion/bash_completion ]]
+then
+  source $HOME/local/share/bash-completion/bash_completion
+fi
+
+# better git log formatting
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit"
