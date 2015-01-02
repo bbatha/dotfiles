@@ -5,7 +5,7 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 " let NeoBundle manage NeoBundle
 " required!
@@ -27,6 +27,14 @@ NeoBundle 'sql.vim' " better sql support
 "VIMPROC Execute things remotely -- speeds up a lot of plugins
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
 NeoBundle 'Shougo/neocomplete.vim' " completion engine
+"NeoBundle 'Valloric/YouCompleteMe', {
+"     \ 'build' : {
+"     \     'mac' : './install.sh --clang-completer --system-libclang --omnisharp-completer',
+"     \     'unix' : './install.sh --clang-completer --system-libclang',
+"     \     'windows' : './install.sh --clang-completer --system-libclang --omnisharp-completer',
+"     \     'cygwin' : './install.sh --clang-completer --system-libclang --omnisharp-completer'
+"     \    }
+"     \ }
 NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 NeoBundle 'c9s/perlomni.vim' " better perl completion engine
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
@@ -34,6 +42,10 @@ NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'eagletmt/neco-ghc' " integrate ghcmod with neocomplete
 NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
 NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
+NeoBundle 'wting/rust.vim' " rust syntax
+NeoBundle 'cespare/vim-toml' " toml syntax
+
+call neobundle#end()
 
 NeoBundleCheck
 
@@ -230,10 +242,10 @@ let g:syntastic_enable_balloons = 0
 " statements
 let g:syntastic_enable_perl_checker = 1
 
-"" Neocomplete
-""""""""""""""""""""""""""""
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
+""" Neocomplete
+"""""""""""""""""""""""""""""
+""Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+"" Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
@@ -279,14 +291,14 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 
-" Enable omni completion.
+"" Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
+"
+"" Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
@@ -299,6 +311,12 @@ endif
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
+" YCM
+"nnoremap <leader>jd :YcmCompleter GoTo<CR>
+""let g:ycm_autoclose_preview_window_after_completion = 1
+"let g:ycm_autoclose_preview_window_after_insertion = 1
+"let g:ycm_confirm_extra_conf = 0
+
 " vim2hs
 let g:haskell_conceal = 0
 let g:haskell_conceal_enumerations = 0
@@ -307,7 +325,7 @@ let g:haskell_tabular = 0
 " ctrlp
 let g:ctrlp_custom_ignore= {
   \ 'dir': '\v[\/](\.(git|hg|svn))|(node_modules|vendor|bin|rint)$',
-  \ 'file': '\v\.(exe|so|dll)$'
+  \ 'file': '\v\.(exe|so|dll|.a)$'
   \ }
 
 let g:ctrlp_root_markers = ['.p4rc']
