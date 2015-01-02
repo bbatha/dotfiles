@@ -55,13 +55,19 @@ export PYTHONPATH=$HOME/local/lib/python2.6/site-packages:$PYTHONPATH
 LOCALPATH=$HOME/.rbenv/bin
 LOCALPATH=$PREFIX/bin:$LOCALPATH
 LOCALPATH=$HOME/.cabal/bin:$LOCALPATH
+LOCALPATH=$HOME/go/bin:$LOCALPATH
 export PATH=$LOCALPATH:$PATH
 
 # rbenv
 eval "$(rbenv init -)"
 
 # perlbrew
-source ~/perl5/perlbrew/etc/bashrc
+export PERLBREW_ROOT=$PREFIX/perl5
+source $PREFIX/perl5/etc/bashrc
+
+# GO
+export GOPATH=$HOME/goprojects
+export PATH=$GOPATH/bin:$PATH
 
 # Misc env for building custom --prefix packages
 export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
@@ -95,6 +101,8 @@ alias pub='/home/dev/build/pub/bin/pub'
 alias tmux='ulimit -c 0; command tmux'
 # typing in bundle exec all the time is annoying
 alias be='bundle exec'
+# render escaped color sequences
+alias less='less -R'
 
 # this is how you hack aliases for subcommands
 # for p4 we want to intercept vdiff and launch vimdiff instead
