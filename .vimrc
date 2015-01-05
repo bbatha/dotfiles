@@ -43,6 +43,12 @@ NeoBundle 'eagletmt/neco-ghc' " integrate ghcmod with neocomplete
 NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
 NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
 NeoBundle 'wting/rust.vim' " rust syntax
+" rust autocompletion
+"NeoBundle 'bbatha/racer', {
+"  \   'build' : {
+"  \     'unix' : 'make'
+"  \   }
+"  \ }
 NeoBundle 'cespare/vim-toml' " toml syntax
 
 call neobundle#end()

@@ -104,6 +104,9 @@ alias be='bundle exec'
 # render escaped color sequences
 alias less='less -R'
 
+# For racer
+export RUST_SRC_PATH="$HOME/local/src/rust/src/"
+
 # this is how you hack aliases for subcommands
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
