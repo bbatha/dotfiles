@@ -26,20 +26,11 @@ NeoBundle 'mattn/emmet-vim' " expand css style tags to html
 NeoBundle 'sql.vim' " better sql support
 "VIMPROC Execute things remotely -- speeds up a lot of plugins
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
-NeoBundle 'Shougo/neocomplete.vim' " completion engine
-"NeoBundle 'Valloric/YouCompleteMe', {
-"     \ 'build' : {
-"     \     'mac' : './install.sh --clang-completer --system-libclang --omnisharp-completer',
-"     \     'unix' : './install.sh --clang-completer --system-libclang',
-"     \     'windows' : './install.sh --clang-completer --system-libclang --omnisharp-completer',
-"     \     'cygwin' : './install.sh --clang-completer --system-libclang --omnisharp-completer'
-"     \    }
-"     \ }
+NeoBundle 'ajh17/VimCompletesMe' " cheap autocomplete
 NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 NeoBundle 'c9s/perlomni.vim' " better perl completion engine
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'eagletmt/neco-ghc' " integrate ghcmod with neocomplete
 NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
 NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
 NeoBundle 'wting/rust.vim' " rust syntax
@@ -94,9 +85,6 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 
-" Fix quickfix list to wrap
-autocmd FileType qf setlocal wrap linebreak
-
 function! s:FixWhitespace(line1,line2)
     let l:save_cursor = getpos(".")
     silent! execute ':' . a:line1 . ',' . a:line2 . 's/\s\+$//'
@@ -105,7 +93,6 @@ endfunction
 
 " Run :FixWhitespace to remove end of line white space
 command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
-
 
 let g:airline_theme = 'powerlineish'
 
@@ -202,6 +189,7 @@ autocmd BufReadPost *
       \ if line("'\"") > 1 && line("'\"") <= line("$") |
       \ exe "normal! g`\"" |
       \ endif
+
 ""Enable repeat.vim
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
@@ -240,6 +228,10 @@ augroup END
 runtime macros/matchit.vim
 
 ""Syntastic
+
+" Fix quickfix list to wrap
+autocmd FileType qf setlocal wrap linebreak
+
 nnoremap <leader>e :Errors<CR>
 nnoremap <leader>n :lnext<CR>
 nnoremap <leader>N :lprev<CR>
@@ -248,80 +240,13 @@ let g:syntastic_enable_balloons = 0
 " statements
 let g:syntastic_enable_perl_checker = 1
 
-""" Neocomplete
-"""""""""""""""""""""""""""""
-""Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-"" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-" Disable slows down vim way to much on largish files
-let g:neocomplete#enable_fuzzy_complete = 0
+" Autocomplete
 
-
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-    \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-endfunction
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-
-"" Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-"
-"" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-" YCM
-"nnoremap <leader>jd :YcmCompleter GoTo<CR>
-""let g:ycm_autoclose_preview_window_after_completion = 1
-"let g:ycm_autoclose_preview_window_after_insertion = 1
-"let g:ycm_confirm_extra_conf = 0
 
 " vim2hs
 let g:haskell_conceal = 0
