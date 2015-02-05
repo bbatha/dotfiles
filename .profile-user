@@ -46,46 +46,23 @@ shopt -s checkwinsize
 export LANG=en_US.UTF-8
 export P4USER=bbatha
 
-export PREFIX=$HOME/local
+PREFIX=$HOME/pkg
 
-# Dynamic language modules
-export PYTHONPATH=$HOME/local/lib/python2.6/site-packages:$PYTHONPATH
-
-# Add local rubygems, node_modules, and built bins
-LOCALPATH=$HOME/.rbenv/bin
-LOCALPATH=$PREFIX/bin:$LOCALPATH
-LOCALPATH=$HOME/.cabal/bin:$LOCALPATH
-LOCALPATH=$HOME/go/bin:$LOCALPATH
-export PATH=$LOCALPATH:$PATH
-
-# rbenv
-eval "$(rbenv init -)"
-
-# perlbrew
-export PERLBREW_ROOT=$PREFIX/perl5
-source $PREFIX/perl5/etc/bashrc
-
-# GO
-export GOPATH=$HOME/goprojects
-export PATH=$GOPATH/bin:$PATH
-
-# Misc env for building custom --prefix packages
-export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX/lib:$LIBRARY_PATH
-export MANPATH=$PREFIX/man:$MANPATH
+# pkgsrc
+export PATH=$PREFIX/bin:$PREFIX/sbin:$PATH
+export MANPATH=$PREFIX/man
+export INFOPATH=$PREFIX/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
 
-#Scratch directory
-export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
+# use system ca certs with pkgsrc curl
+export CURL_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
-# Aliases for setting up env for configure scripts
-alias config_local='CFLAGS="-I$PREFIX/include" LDFLAGS="-L$PREFIX/lib" ./configure --prefix=$PREFIX'
-# Turn on everything for vim builds except for gui things. Tmux breaks $DISPLAY
-# and you get annoying warnings everytime you do anything with vim if you build
-# any gui support in
-alias config_vim='CFLAGS="-I$PREFIX/include/luajit-2.0 -I$PREFIX/include" LDFLAGS="-L$PREFIX/lib" ./configure --prefix=$PREFIX --with-features=huge --enable-luainterp --with-luajit --with-lua-prefix=$PREFIX --enable-rubyinterp --enable-perlinterp --enable-pythoninterp'
-# PhantomJS sucks and doesn't use $PATH
-export PHANTOMJS_BIN=$PREFIX/bin/phantomjs
+# rbenv
+export PATH=$HOME/.rbenv/bin:$PATH
+eval "$(rbenv init -)"
+
+# Scratch directory
+export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
 
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
@@ -103,9 +80,12 @@ alias tmux='ulimit -c 0; command tmux'
 alias be='bundle exec'
 # render escaped color sequences
 alias less='less -R'
+# get pkgsrc vulerabilities
+alias pkgupvuln="$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1"
 
 # For racer
-export RUST_SRC_PATH="$HOME/local/src/rust/src/"
+#export RUST_SRC_PATH="$HOME/local/src/rust/src/"
+
 
 # this is how you hack aliases for subcommands
 # for p4 we want to intercept vdiff and launch vimdiff instead
@@ -123,9 +103,9 @@ function ruby-build() {
 }
 
 # Add our bash completion scripts
-if [[ $PS1 && -f $HOME/local/share/bash-completion/bash_completion ]]
+if [[ $PS1 && -f $PREFIX/share/bash-completion/bash_completion ]]
 then
-  source $HOME/local/share/bash-completion/bash_completion
+  source $PREFIX/share/bash-completion/bash_completion
 fi
 
 # better git log formatting
