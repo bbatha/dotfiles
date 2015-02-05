@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #ident	"@(#)profile-user	0.9	01/07/08 FDS"
 #
 #	This is the default standard profile provided to users.
@@ -11,10 +13,10 @@ fi
 # don't get booted for inactivity
 unset autologout
 
-export DISPLAY=`whoami`pc.pc.factset.com:0.0
+export DISPLAY="$(whoami)pc.pc.factset.com:0.0"
 
 # Load directory color maps
-[[ -f $HOME/.dir_colors ]] && eval `dircolors ${HOME}/.dir_colors`
+[[ -f "$HOME/.dir_colors" ]] && eval "$(dircolors "${HOME}/.dir_colors")"
 
 # Better ssh interrupt support. Causes less hangs
 stty -ixon -ixoff
@@ -81,7 +83,7 @@ alias be='bundle exec'
 # render escaped color sequences
 alias less='less -R'
 # get pkgsrc vulerabilities
-alias pkgupvuln="$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1"
+alias pkgupvuln='$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
 
 # For racer
 #export RUST_SRC_PATH="$HOME/local/src/rust/src/"
@@ -91,7 +93,7 @@ alias pkgupvuln="$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabil
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
-  case $* in
+  case "$*" in
     vdiff2* ) shift 1; P4DIFF=vimdiff command p4 diff2 "$@" ;;
     vdiff* ) shift 1; P4DIFF=vimdiff command p4 diff "$@" ;;
     * ) command p4 "$@" ;;
@@ -99,17 +101,17 @@ function p4() {
 }
 
 function ruby-build() {
-  command ruby-build $1
+  command ruby-build "$1"
 }
 
 function cabal() {
-  case $* in
+  case "$*" in
     update* )
       shift 1
       # stackage provides snapshots of hackage where all of the packages can
       # build against each other
       # see https://www.fpcomplete.com/blog/2014/12/backporting-bug-fixes
-      wget http://www.stackage.org/lts/cabal.config?global=true -O $HOME/.cabal/cabal.config
+      wget 'http://www.stackage.org/lts/cabal.config?global=true' -O "$HOME/.cabal/cabal.config"
       command cabal update "$@"
       ;;
     * ) command cabal "$@" ;;
@@ -119,7 +121,7 @@ function cabal() {
 # Add our bash completion scripts
 if [[ $PS1 && -f $PREFIX/share/bash-completion/bash_completion ]]
 then
-  source $PREFIX/share/bash-completion/bash_completion
+  source "$PREFIX/share/bash-completion/bash_completion"
 fi
 
 # better git log formatting
