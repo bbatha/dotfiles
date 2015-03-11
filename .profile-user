@@ -86,6 +86,10 @@ alias be='bundle exec'
 alias less='less -R'
 # get pkgsrc vulerabilities
 alias pkgupvuln='$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
+# gulp colors doesn't work right in solarized terminals
+alias gulp='gulp --no-color'
+# command to build nvim with a prefix
+alias build_nvim='cmake -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX . && make all install -j 8'
 
 # For racer
 #export RUST_SRC_PATH="$HOME/local/src/rust/src/"
