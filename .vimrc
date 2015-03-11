@@ -11,36 +11,48 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 " required!
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'camelcasemotion' " Motion for camelcase words
-NeoBundle 'tpope/vim-surround' " edit surronding tags of text object
+" UI enhancements
 NeoBundle 'altercation/vim-colors-solarized' " pretty colors
 NeoBundle 'bling/vim-airline' " pretty status bar
-NeoBundle 'matchit.zip' " better % matching
-NeoBundle 'ruby-matchit' " match 'end'
-NeoBundle 'tpope/vim-repeat' " fix repeat for use with common plugins
+NeoBundle 'takac/vim-hardtime' " training to stop using hjkl
+
+" Languages
 NeoBundle 'tpope/vim-haml' " haml syntax highlighting
-NeoBundle 'scrooloose/syntastic' " syntax checker
 NeoBundle 'pangloss/vim-javascript' " better js highlighting/indenting
 NeoBundle 'mustache/vim-mustache-handlebars' " mustache/handlebars template support
-NeoBundle 'mattn/emmet-vim' " expand css style tags to html
-NeoBundle 'sql.vim' " better sql support
-"VIMPROC Execute things remotely -- speeds up a lot of plugins
-NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
-NeoBundle 'ajh17/VimCompletesMe' " cheap autocomplete
-NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 NeoBundle 'c9s/perlomni.vim' " better perl completion engine
+NeoBundle 'sql.vim' " better sql support
+NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
+NeoBundle 'wting/rust.vim' " rust syntax
+NeoBundle 'cespare/vim-toml' " toml syntax
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
-NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
-NeoBundle 'wting/rust.vim' " rust syntax
 " rust autocompletion
 "NeoBundle 'bbatha/racer', {
 "  \   'build' : {
 "  \     'unix' : 'make'
 "  \   }
 "  \ }
-NeoBundle 'cespare/vim-toml' " toml syntax
+
+" Motion
+NeoBundle 'camelcasemotion' " Motion for camelcase words
+NeoBundle 'tpope/vim-surround' " edit surronding tags of text object
+NeoBundle 'matchit.zip' " better % matching
+NeoBundle 'ruby-matchit' " match 'end'
+NeoBundle 'tpope/vim-repeat' " fix repeat for use with common plugins
+NeoBundle 'mattn/emmet-vim' " expand css style tags to html
+
+" Time savers
+NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
+NeoBundle 'Shougo/neocomplete' " autocomplete
+
+" Dev tools
+NeoBundle 'scrooloose/syntastic' " syntax checker
+NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
+
+" Utilities
+" VIMPROC Execute things remotely -- speeds up a lot of plugins
+NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
 
 call neobundle#end()
 
@@ -223,7 +235,10 @@ augroup SimultaneousEdits
   autocmd SwapExists * :let v:swapchoice = 'e'
 augroup END
 
-""Matchit
+" \ is leader
+let mapleader = ' '
+let maplocalleader = '\\'
+
 """""""""""""""
 runtime macros/matchit.vim
 
@@ -231,7 +246,6 @@ runtime macros/matchit.vim
 
 " Fix quickfix list to wrap
 autocmd FileType qf setlocal wrap linebreak
-
 nnoremap <leader>e :Errors<CR>
 nnoremap <leader>n :lnext<CR>
 nnoremap <leader>N :lprev<CR>
