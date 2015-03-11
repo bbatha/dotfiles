@@ -333,3 +333,8 @@ let g:ctrlp_custom_ignore= {
   \ }
 
 let g:ctrlp_root_markers = ['.p4rc']
+
+" Hardtime
+let g:hardtime_default_on = 1
+" Don't stop directional motion in quickfix buffer
+let g:hardtime_ignore_quickfix = 1
