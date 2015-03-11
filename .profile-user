@@ -34,7 +34,7 @@ export PS2=" "
 
 
 # Retain bash history like zsh
-shopt -s histappend
+#shopt -s histappend
 export HISTSIZE=100000
 export HISTCONTROL=ignoredups:erasedups
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
