@@ -52,6 +52,8 @@ PREFIX=$HOME/pkg
 
 # pkgsrc
 export PATH=$PREFIX/bin:$PREFIX/sbin:$PATH
+# add pip
+export PATH=$HOME/.local/bin:$PATH
 export MANPATH=$PREFIX/man
 export INFOPATH=$PREFIX/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
