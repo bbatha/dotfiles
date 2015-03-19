@@ -70,8 +70,10 @@ export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
 
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
-# review board uploadeer
-alias rb='perl /home/data/index/script/common/submit_review_board.pl'
+# p4fds2 might be acceptable
+alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+# review board uploader
+alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
 alias ls='ls -hF --color=auto'
 # enable x forwarding fwiw
