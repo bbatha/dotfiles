@@ -37,8 +37,6 @@ NeoBundle 'eagletmt/ghcmod-vim'
 " Motion
 NeoBundle 'camelcasemotion' " Motion for camelcase words
 NeoBundle 'tpope/vim-surround' " edit surronding tags of text object
-NeoBundle 'matchit.zip' " better % matching
-NeoBundle 'ruby-matchit' " match 'end'
 NeoBundle 'tpope/vim-repeat' " fix repeat for use with common plugins
 NeoBundle 'mattn/emmet-vim' " expand css style tags to html
 
