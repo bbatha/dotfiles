@@ -71,7 +71,7 @@ export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
 # p4fds2 might be acceptable
-alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+#alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
 # review board uploader
 alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
@@ -101,9 +101,13 @@ alias build_nvim='cmake -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX . && make all instal
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
+  local p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+  # use command p4 when not using p4fds
   case "$*" in
-    vdiff2* ) shift 1; P4DIFF=vimdiff command p4 diff2 "$@" ;;
-    vdiff* ) shift 1; P4DIFF=vimdiff command p4 diff "$@" ;;
+    vdiff2* ) shift 1; P4DIFF=vimdiff $p4 diff2 "$@" ;;
+    vdiff* ) shift 1; P4DIFF=vimdiff $p4 diff "$@" ;;
+    diff2* ) shift 1; P4DIFF=colordiff $p4 diff2 -du "$@" ;;
+    diff* ) shift 1; P4DIFF=colordiff $p4 diff -du "$@" ;;
     * ) command p4 "$@" ;;
   esac
 }
