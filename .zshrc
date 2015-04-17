@@ -77,6 +77,10 @@ setopt EXTENDED_GLOB
 # hows about arrays be awesome?  (that is, frew${cool}frew has frew surrounding all the variables, not just first and last
 setopt RC_EXPAND_PARAM
 
+setopt COMPLETE_IN_WORD # Complete from the middle of a word
+
+setopt always_to_end # complete and move cursor to end
+
 #}}}
 
 #{{{ Variables
@@ -448,11 +452,13 @@ LOGCHECK=0
 #{{{ ZSH Modules
 
 export PAGER=less
-autoload -U compinit promptinit zcalc zsh-mime-setup
+autoload -U compinit promptinit zcalc zsh-mime-setup zmv
 compinit
 promptinit
 zsh-mime-setup
 
 
 #}}}
-alias submodule-update='git submodule foreach git pull' 
+alias submodule-update='git submodule foreach git pull'
+
+eval "$(rbenv init -)"
