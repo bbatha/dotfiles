@@ -5,6 +5,7 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
+let g:neobundle#install_process_timeout = 1500
 call neobundle#begin(expand('~/.vim/bundle/'))
 
 " let NeoBundle manage NeoBundle
@@ -25,24 +26,33 @@ NeoBundle 'sql.vim' " better sql support
 NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
 NeoBundle 'wting/rust.vim' " rust syntax
 NeoBundle 'cespare/vim-toml' " toml syntax
+NeoBundle 'kchmck/vim-coffee-script' " coffee script
+
+NeoBundle 'Valloric/YouCompleteMe', {
+      \ 'build' : {
+      \   'unix' : './install.sh --clang-completer',
+      \   'mac'  : './install.sh --clang-completer',
+      \  }
+      \ }
+NeoBundle 'rdnetto/YCM-Generator'
+
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 NeoBundle 'eagletmt/ghcmod-vim'
 " rust autocompletion
-"NeoBundle 'bbatha/racer', {
-"  \   'build' : {
-"  \     'unix' : 'make'
-"  \   }
-"  \ }
+NeoBundle 'phildawes/racer', {
+  \   'build' : {
+  \     'unix' : 'cargo build --release',
+  \     'mac' : 'cargo build --release'
+  \   }
+  \ }
 
 " Motion
 NeoBundle 'camelcasemotion' " Motion for camelcase words
 NeoBundle 'tpope/vim-surround' " edit surronding tags of text object
 NeoBundle 'tpope/vim-repeat' " fix repeat for use with common plugins
-NeoBundle 'mattn/emmet-vim' " expand css style tags to html
 
 " Time savers
 NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
-NeoBundle 'Shougo/neocomplete' " autocomplete
 
 " Dev tools
 NeoBundle 'scrooloose/syntastic' " syntax checker
@@ -203,8 +213,8 @@ autocmd BufReadPost *
 ""Enable repeat.vim
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
+"" Ag - the_silver_searcher
 let g:agprg='ag --column'
-
 
 """"""""""""""""""""""""""""""""""""""""
 "" settings controlling temporary/backup files
@@ -252,79 +262,14 @@ let g:syntastic_enable_balloons = 0
 " potentially risky. it will run BEGIN, UNITCHECK, CHECK blocks and use
 " statements
 let g:syntastic_enable_perl_checker = 1
+let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 
-" Autocomplete
-
-""" Neocomplete
-"""""""""""""""""""""""""""""
-""Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-"" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-" Disable slows down vim way to much on largish files
-let g:neocomplete#enable_fuzzy_complete = 0
-
-
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-    \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-endfunction
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-
-"" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-"
-"" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" vim2hs
+"" vim2hs
 let g:haskell_conceal = 0
 let g:haskell_conceal_enumerations = 0
 let g:haskell_tabular = 0
 
-" ctrlp
+"" ctrlp
 let g:ctrlp_custom_ignore= {
   \ 'dir': '\v[\/](\.(git|hg|svn))|(node_modules|vendor|bin|rint)$',
   \ 'file': '\v\.(exe|so|dll|.a)$'
@@ -332,7 +277,32 @@ let g:ctrlp_custom_ignore= {
 
 let g:ctrlp_root_markers = ['.p4rc']
 
-" Hardtime
+"" Hardtime
 let g:hardtime_default_on = 1
 " Don't stop directional motion in quickfix buffer
 let g:hardtime_ignore_quickfix = 1
+
+"" YouCompleteMe
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'vim' : ['re![_a-zA-Z]+[_\w]*\.'],
+  \   'ruby,rust' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
+
+set omnifunc=syntaxcomplete#Complete
+
+"" Racer
+set hidden
+let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
