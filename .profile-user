@@ -13,7 +13,8 @@ fi
 # don't get booted for inactivity
 unset autologout
 
-export DISPLAY="$(whoami)pc.pc.factset.com:0.0"
+ME=$(whoami)
+export DISPLAY="${ME}pc.pc.factset.com:0.0"
 
 # Load directory color maps
 [[ -f "$HOME/.dir_colors" ]] && eval "$(dircolors "${HOME}/.dir_colors")"
@@ -52,6 +53,8 @@ PREFIX=$HOME/pkg
 
 # pkgsrc
 export PATH=$PREFIX/bin:$PREFIX/sbin:$PATH
+export LD_LIBRARY_PATH=$PREFIX/lib
+export PKGSRCDIR=$HOME/opt/pkgsrc
 # add pip
 export PATH=$HOME/.local/bin:$PATH
 export MANPATH=$PREFIX/man
@@ -138,3 +141,5 @@ fi
 
 # better git log formatting
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit"
+
+export RUST_SRC_PATH="${HOME}/pkg/src/rust/src"
