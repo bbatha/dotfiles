@@ -5,7 +5,7 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-let g:neobundle#install_process_timeout = 1500
+let g:neobundle#install_process_timeout = 2400
 call neobundle#begin(expand('~/.vim/bundle/'))
 
 " let NeoBundle manage NeoBundle
@@ -27,14 +27,18 @@ NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
 NeoBundle 'wting/rust.vim' " rust syntax
 NeoBundle 'cespare/vim-toml' " toml syntax
 NeoBundle 'kchmck/vim-coffee-script' " coffee script
+NeoBundle 'rhysd/vim-clang-format' " Keep clang languages nicely formatted
 
+" General autocomplete. Slows down first launch on host and requires
+" a c++11 compatible libstdc++
 NeoBundle 'Valloric/YouCompleteMe', {
-      \ 'build' : {
-      \   'unix' : './install.sh --clang-completer',
-      \   'mac'  : './install.sh --clang-completer',
-      \  }
+     \ 'build'      : {
+        \ 'mac'     : './install.sh --clang-completer --system-libclang',
+        \ 'unix'    : './install.sh --clang-completer --system-libclang',
+        \ 'windows' : './install.sh --clang-completer --system-libclang',
+        \ 'cygwin'  : './install.sh --clang-completer --system-libclang'
+        \ }
       \ }
-NeoBundle 'rdnetto/YCM-Generator'
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 NeoBundle 'eagletmt/ghcmod-vim'
@@ -262,7 +266,6 @@ let g:syntastic_enable_balloons = 0
 " potentially risky. it will run BEGIN, UNITCHECK, CHECK blocks and use
 " statements
 let g:syntastic_enable_perl_checker = 1
-let g:syntastic_cpp_compiler_options = ' -std=c++11 '
 
 "" vim2hs
 let g:haskell_conceal = 0
@@ -282,11 +285,16 @@ let g:hardtime_default_on = 1
 " Don't stop directional motion in quickfix buffer
 let g:hardtime_ignore_quickfix = 1
 
+"" Racer
+set hidden
+let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
+
+set omnifunc=syntaxcomplete#Complete
+
 "" YouCompleteMe
+" Load .ycm_extra_conf without prompting
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
+" Add rust
 let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
   \   'objc' : ['->', '.'],
@@ -296,13 +304,20 @@ let g:ycm_semantic_triggers =  {
   \   'php' : ['->', '::'],
   \   'cs,java,javascript,d,python,perl6,scala,vb,elixir,go' : ['.'],
   \   'vim' : ['re![_a-zA-Z]+[_\w]*\.'],
-  \   'ruby,rust' : ['.', '::'],
+  \   'ruby' : ['.', '::'],
+  \   'rust' : ['.', '::', '::{'],
   \   'lua' : ['.', ':'],
   \   'erlang' : [':'],
   \ }
+" Seed the identifiers db with language keywords
+let g:ycm_seed_identifiers_with_syntax = 1
+" close the preview window after completing
+let g:ycm_autoclose_preview_window_after_completion = 1
+" close the preview window when leaving insert mode
+let g:ycm_autoclose_preview_window_after_insertion = 1
 
-set omnifunc=syntaxcomplete#Complete
-
-"" Racer
-set hidden
-let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
+"" Clang-format
+let g:clang_format#auto_format = 1
+let g:clang_format#detect_style_file = 1
+let g:clang_format#auto_format_on_insert_leave = 1
+let g:clang_format#auto_formatexpr = 1

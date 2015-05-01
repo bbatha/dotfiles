@@ -57,7 +57,7 @@ export LD_LIBRARY_PATH=$PREFIX/lib
 export PKGSRCDIR=$HOME/opt/pkgsrc
 # add pip
 export PATH=$HOME/.local/bin:$PATH
-export MANPATH=$PREFIX/man
+export MANPATH=$PREFIX/man:$MANPATH
 export INFOPATH=$PREFIX/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
 
@@ -93,8 +93,11 @@ alias less='less -R'
 alias pkgupvuln='$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
 # gulp colors doesn't work right in solarized terminals
 alias gulp='gulp --no-color'
-# command to build nvim with a prefix
-alias build_nvim='cmake -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX . && make all install -j 8'
+# vim with the libstdc++ that supports C++ 11 for YouCompleteMe.
+alias vim='LD_LIBRARY_PATH=$PREFIX/gcc48/lib64:$LD_LIBRARY_PATH vim'
+# p4view --check testing
+alias p4view='/home/fonix/prd_progs/build/cross_platform/testing/p4view_check/p4view'
+
 
 # For racer
 #export RUST_SRC_PATH="$HOME/local/src/rust/src/"
@@ -111,7 +114,7 @@ function p4() {
     vdiff* ) shift 1; P4DIFF=vimdiff $p4 diff "$@" ;;
     diff2* ) shift 1; P4DIFF=colordiff $p4 diff2 -du "$@" ;;
     diff* ) shift 1; P4DIFF=colordiff $p4 diff -du "$@" ;;
-    * ) command p4 "$@" ;;
+    * ) $p4 "$@" ;;
   esac
 }
 
