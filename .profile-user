@@ -52,6 +52,7 @@ export P4USER=bbatha
 PREFIX=$HOME/pkg
 
 # pkgsrc
+export OLD_PATH=$PATH
 export PATH=$PREFIX/bin:$PREFIX/sbin:$PATH
 export LD_LIBRARY_PATH=$PREFIX/lib
 export PKGSRCDIR=$HOME/opt/pkgsrc
@@ -97,17 +98,30 @@ alias gulp='gulp --no-color'
 alias vim='LD_LIBRARY_PATH=$PREFIX/gcc48/lib64:$LD_LIBRARY_PATH vim'
 # p4view --check testing
 alias p4view='/home/fonix/prd_progs/build/cross_platform/testing/p4view_check/p4view'
+# syntax highlighting cat
+alias ccat='pygmentize -g'
+# make the platform command use system curl
+alias platform='PATH=$OLD_PATH platform'
 
-
-# For racer
-#export RUST_SRC_PATH="$HOME/local/src/rust/src/"
-
+# syntax highlighting less
+function cless() {
+  pygmentize -g "${1}" | less
+}
 
 # this is how you hack aliases for subcommands
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
-  local p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+  local p4fds2='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+
+  if [ -e "${p4fds2}" ]
+  then
+    local p4="${p4fds2}"
+  else
+    local p4
+    p4="$(which p4)"
+  fi
+
   # use command p4 when not using p4fds
   case "$*" in
     vdiff2* ) shift 1; P4DIFF=vimdiff $p4 diff2 "$@" ;;
