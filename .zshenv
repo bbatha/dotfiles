@@ -10,6 +10,7 @@ elif [ `uname -o` = "GNU/Linux" ]; then
 elif [ `uname` = "FreeBSD" ]; then
   alias ls='ls -GhF'
   alias doall="jls | grep -v JID | awk '{ print \$1 }' | xargs -I {} sudo jexec {} "
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/llvm36/lib/
 fi
 
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit" 

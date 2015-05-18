@@ -1,74 +1,51 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-
-let g:neobundle#install_process_timeout = 2400
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" let NeoBundle manage NeoBundle
-" required!
-NeoBundleFetch 'Shougo/neobundle.vim'
-
+call plug#begin('~/.vim/plugged')
 " UI enhancements
-NeoBundle 'altercation/vim-colors-solarized' " pretty colors
-NeoBundle 'bling/vim-airline' " pretty status bar
-NeoBundle 'takac/vim-hardtime' " training to stop using hjkl
+Plug 'altercation/vim-colors-solarized' " pretty colors
+Plug 'bling/vim-airline' " pretty status bar
+Plug 'takac/vim-hardtime' " training to stop using hjkl
 
 " Languages
-NeoBundle 'tpope/vim-haml' " haml syntax highlighting
-NeoBundle 'pangloss/vim-javascript' " better js highlighting/indenting
-NeoBundle 'mustache/vim-mustache-handlebars' " mustache/handlebars template support
-NeoBundle 'c9s/perlomni.vim' " better perl completion engine
-NeoBundle 'sql.vim' " better sql support
-NeoBundle 'dag/vim2hs' " better haskell syntax highlighting
-NeoBundle 'wting/rust.vim' " rust syntax
-NeoBundle 'cespare/vim-toml' " toml syntax
-NeoBundle 'kchmck/vim-coffee-script' " coffee script
-NeoBundle 'rhysd/vim-clang-format' " Keep clang languages nicely formatted
+Plug 'tpope/vim-haml', { 'for': 'haml' } " haml syntax highlighting
+" better js highlighting/indenting
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" mustache/handlebars template support
+Plug 'mustache/vim-mustache-handlebars', { 'for': ['handlebars', 'mustache'] }
+Plug 'c9s/perlomni.vim', { 'for': 'perl' }  " better perl completion engine
+Plug 'sql.vim' " better sql support
+Plug 'dag/vim2hs', { 'for': 'haskell' } " better haskell syntax highlighting
+Plug 'wting/rust.vim', { 'for': 'rust' } " rust syntax
+Plug 'cespare/vim-toml', { 'for': 'toml' } " toml syntax
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee script' } " coffee script
 
+" FREEBSD
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
-NeoBundle 'Valloric/YouCompleteMe', {
-     \ 'build'      : {
-        \ 'mac'     : './install.sh --clang-completer --system-libclang',
-        \ 'unix'    : './install.sh --clang-completer --system-libclang',
-        \ 'windows' : './install.sh --clang-completer --system-libclang',
-        \ 'cygwin'  : './install.sh --clang-completer --system-libclang'
-        \ }
-      \ }
+Plug 'Valloric/YouCompleteMe', {
+      \'do': './install.sh --clang-completer'
+        \+ '$([ $(uname) = \"FreeBSD\" ] && echo \"--system-libclang --system-boost\")'
+    \}
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
-NeoBundle 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " rust autocompletion
-NeoBundle 'phildawes/racer', {
-  \   'build' : {
-  \     'unix' : 'cargo build --release',
-  \     'mac' : 'cargo build --release'
-  \   }
-  \ }
+Plug 'phildawes/racer', { 'for': 'rust', 'do': 'cargo build --release' }
 
 " Motion
-NeoBundle 'camelcasemotion' " Motion for camelcase words
-NeoBundle 'tpope/vim-surround' " edit surronding tags of text object
-NeoBundle 'tpope/vim-repeat' " fix repeat for use with common plugins
+Plug 'camelcasemotion' " Motion for camelcase words
+Plug 'tpope/vim-surround' " edit surronding tags of text object
+Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 
 " Time savers
-NeoBundle 'kien/ctrlp.vim' " fuzzy filename matching.
+Plug 'kien/ctrlp.vim' " fuzzy filename matching.
 
 " Dev tools
-NeoBundle 'scrooloose/syntastic' " syntax checker
-NeoBundle 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
+Plug 'scrooloose/syntastic' " syntax checker
+Plug 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 
-" Utilities
-" VIMPROC Execute things remotely -- speeds up a lot of plugins
-NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'unix': 'make -f make_unix.mak' } }
-
-call neobundle#end()
-
-NeoBundleCheck
+call plug#end()
 
 syntax on
 filetype plugin indent on
@@ -316,8 +293,8 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 " close the preview window when leaving insert mode
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
-"" Clang-format
-let g:clang_format#auto_format = 1
-let g:clang_format#detect_style_file = 1
-let g:clang_format#auto_format_on_insert_leave = 1
-let g:clang_format#auto_formatexpr = 1
+"set omnifunc=syntaxcomplete#Complete
+
+"" Racer
+set hidden
+let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
