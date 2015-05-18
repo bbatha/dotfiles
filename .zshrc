@@ -460,5 +460,3 @@ zsh-mime-setup
 
 #}}}
 alias submodule-update='git submodule foreach git pull'
-
-eval "$(rbenv init -)"

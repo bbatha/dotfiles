@@ -5,9 +5,11 @@ if [ `uname` = "Darwin" ]; then
 	eval `gdircolors ${HOME}/.dir_colors`
 	alias ls='ls -hF -G'
 elif [ `uname -o` = "GNU/Linux" ]; then
+  eval "$(rbenv init -)"
 	eval `dircolors ${HOME}/.dir_colors`
 	alias ls='ls -hF --color=auto'
 elif [ `uname` = "FreeBSD" ]; then
+  eval "$(rbenv init -)"
   alias ls='ls -GhF'
   alias doall="jls | grep -v JID | awk '{ print \$1 }' | xargs -I {} sudo jexec {} "
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/llvm36/lib/
