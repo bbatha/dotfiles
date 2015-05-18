@@ -1,7 +1,7 @@
 export TERM=xterm-256color
 
 if [ `uname` = "Darwin" ]; then
-  export PATH=/usr/local/bin:/usr/local/sbin:$HOME/local/bin:$PATH
+  export PATH=/usr/local/bin:/usr/local/sbin:$HOME/local/bin:$HOME/.cabal/bin:$PATH
 	eval `gdircolors ${HOME}/.dir_colors`
 	alias ls='ls -hF -G'
 elif [ `uname -o` = "GNU/Linux" ]; then
