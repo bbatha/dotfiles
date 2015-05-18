@@ -19,14 +19,17 @@ Plug 'dag/vim2hs', { 'for': 'haskell' } " better haskell syntax highlighting
 Plug 'wting/rust.vim', { 'for': 'rust' } " rust syntax
 Plug 'cespare/vim-toml', { 'for': 'toml' } " toml syntax
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee script' } " coffee script
+" Format clang compatible languages
+Plug 'rhysd/vim-clang-format', { 'for': ['c', 'cpp', 'objc'] }
 
-" FREEBSD
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
 Plug 'Valloric/YouCompleteMe', {
       \'do': './install.sh --clang-completer'
         \+ '$([ $(uname) = \"FreeBSD\" ] && echo \"--system-libclang --system-boost\")'
     \}
+Plug 'SirVer/ultisnips' " snippets engine
+Plug 'honza/vim-snippets' " snippets library
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
@@ -258,7 +261,7 @@ let g:ctrlp_custom_ignore= {
 let g:ctrlp_root_markers = ['.p4rc']
 
 "" Hardtime
-let g:hardtime_default_on = 1
+let g:hardtime_default_on = 0
 " Don't stop directional motion in quickfix buffer
 let g:hardtime_ignore_quickfix = 1
 
@@ -293,8 +296,24 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 " close the preview window when leaving insert mode
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
-"set omnifunc=syntaxcomplete#Complete
+" Seed normal omnicomplete dbs
+set omnifunc=syntaxcomplete#Complete
 
-"" Racer
-set hidden
-let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
+"" Clang-format
+let g:clang_format#detect_style_file = 1
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+"" UltiSnips
+" make ultisnips and ycm play ball
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
