@@ -191,21 +191,7 @@ if has("gui_running")
   let g:solarized_termcolors=256
 else
   let g:solarized_termcolors=16
-
-  " Airline
-  if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-  endif
-
-  let g:airline_left_sep = '⮀'
-  let g:airline_left_alt_sep = '⮁'
-  let g:airline_right_sep = '⮂'
-  let g:airline_right_alt_sep = '⮃'
-  let g:airline_symbols.branch = '⭠'
-  let g:airline_symbols.readonly = '⭤'
-  let g:airline_symbols.linenr = '⭡'
-
-  "For more intricate customizations, you can replace the predefined sections
+  let g:airline_powerline_fonts = 1
 endif
 
 set background=dark
