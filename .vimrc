@@ -255,7 +255,6 @@ let g:hardtime_default_on = 1
 let g:hardtime_ignore_quickfix = 1
 
 "" Racer
-set hidden
 let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
 
 "" YouCompleteMe
