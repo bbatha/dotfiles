@@ -62,6 +62,7 @@ set nobackup
 """"DISPLAY
 set laststatus=2
 set nu
+set rnu
 set ruler
 set showcmd
 set showmatch
@@ -73,12 +74,94 @@ set matchtime=2
 set matchpairs+=<:>
 set hlsearch
 set incsearch
+set smartindent
+set autoindent
+set smarttab
 
-""PasteMode
-set pastetoggle=<F2>
+" backspace behaves 'normally'
+set esckeys
+set ignorecase
+set smartcase
+set magic
+set backspace=indent,eol,start
 
-""FACTSET SKELETONS
-""source /home/fonix/prd_progs/tools/conf/vim/fds.vimrc
+set whichwrap+=<,>,h,l " cursor keys also wrap
+
+" spaces instead of tabs
+" prefer 2 spaces
+set softtabstop=2
+set tabstop=2
+set shiftwidth=2
+set expandtab
+
+set autoread " automatically reload a file if it's changed outside vim
+
+" wrap settings
+set nowrap " wrap lines rather than use horiz. scrolling
+set linebreak " try not to wrap in the middle of a word
+set textwidth=80 " 80-character lines maximum
+
+if &term =~? "^xterm.*"
+  set ttyfast
+  set ttyscroll=3
+endif
+
+" Seed normal omnicomplete dbs
+set omnifunc=syntaxcomplete#Complete
+
+"" Matchit
+"""""""""""""""
+runtime macros/matchit.vim
+
+" format settings
+" t - Auto-wrap text using textwidth
+" c - Auto-wrap comments using textwidth, inserting the current comment
+" leader automatically.
+" r - Automatically insert the current comment leader after hitting <Enter>
+" in Insert mode.
+" q - Allow formatting of comments with "gq".
+" Note that formatting will not change blank lines or lines containing
+" only the comment leader. A new paragraph starts after such a line,
+" or when the comment leader changes.
+" n - When formatting text, recognize numbered lists.
+" 2 - When formatting text, use the indent of the second line of a paragraph
+" for the rest of the paragraph, instead of the indent of the first line.
+" 1 - Don't break a line after a one-letter word. It's broken before it
+" instead (if possible).
+set formatoptions=tcrqn21
+
+" Automatically restore cursor position when possible
+autocmd BufReadPost *
+      \ if line("'\"") > 1 && line("'\"") <= line("$") |
+      \ exe "normal! g`\"" |
+      \ endif
+
+""""""""""""""""""""""""""""""""""""""""
+"" settings controlling temporary/backup files
+""""""""""""""""""""""""""""""""""""""""
+
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+
+" Configure undo files (if we're in vim 7.3 and +persistent_undo has been
+" compiled)
+if has("persistent_undo")
+  set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+  set undofile
+endif
+
+""
+" Stop annoying me every time I have a file open in two different vim
+" sessions.
+" 'e' is "Edit Anyway" in this circumstance. Other options you could use
+" here:
+" 'q' - quit.
+" 'o' - open the file in read-only mode.
+" 'r' - recover the changes.
+augroup SimultaneousEdits
+  autocmd!
+  autocmd SwapExists * :let v:swapchoice = 'e'
+augroup END
 
 " Highlight EOL whitespace, http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 highlight ExtraWhitespace ctermbg=darkred guibg=#382424
@@ -128,112 +211,18 @@ endif
 set background=dark
 colorscheme solarized
 
-""""""""""""""""""""""""""""""""""""""""
-"" This file manages all global editing
-"" settings, such as indent size, etc.
-""""""""""""""""""""""""""""""""""""""""
+" \ is leader
+let mapleader = ' '
+let maplocalleader = '\\'
 
-" automatically indent lines and try to do it intelligently
-set autoindent
-set smarttab
-set smartindent
-
-" backspace behaves 'normally'
-set esckeys
-set ignorecase
-set smartcase
-set magic
-set backspace=indent,eol,start
-
-set whichwrap+=<,>,h,l " cursor keys also wrap
-
-" spaces instead of tabs
-" prefer 2 spaces
-set softtabstop=2
-set tabstop=2
-set shiftwidth=2
-set expandtab
-
-set autoread " automatically reload a file if it's changed outside vim
-
-" wrap settings
-set nowrap " wrap lines rather than use horiz. scrolling
-set linebreak " try not to wrap in the middle of a word
-set textwidth=80 " 80-character lines maximum
-
-if &term =~? "^xterm.*"
-  set ttyfast
-  set ttyscroll=3
-endif
-
-"line numbers
-"Makes VIM slow don't enable :(
-"set relativenumber
-"set number
-
-" format settings
-" t - Auto-wrap text using textwidth
-" c - Auto-wrap comments using textwidth, inserting the current comment
-" leader automatically.
-" r - Automatically insert the current comment leader after hitting <Enter>
-" in Insert mode.
-" q - Allow formatting of comments with "gq".
-" Note that formatting will not change blank lines or lines containing
-" only the comment leader. A new paragraph starts after such a line,
-" or when the comment leader changes.
-" n - When formatting text, recognize numbered lists.
-" 2 - When formatting text, use the indent of the second line of a paragraph
-" for the rest of the paragraph, instead of the indent of the first line.
-" 1 - Don't break a line after a one-letter word. It's broken before it
-" instead (if possible).
-set formatoptions=tcrqn21
-
-" Automatically restore cursor position when possible
-autocmd BufReadPost *
-      \ if line("'\"") > 1 && line("'\"") <= line("$") |
-      \ exe "normal! g`\"" |
-      \ endif
+""FACTSET SKELETONS
+""source /home/fonix/prd_progs/tools/conf/vim/fds.vimrc
 
 ""Enable repeat.vim
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 "" Ag - the_silver_searcher
 let g:agprg='ag --column'
-
-""""""""""""""""""""""""""""""""""""""""
-"" settings controlling temporary/backup files
-""""""""""""""""""""""""""""""""""""""""
-
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-
-" Configure undo files (if we're in vim 7.3 and +persistent_undo has been
-" compiled)
-if has("persistent_undo")
-  set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-  set undofile
-endif
-
-""
-" Stop annoying me every time I have a file open in two different vim
-" sessions.
-" 'e' is "Edit Anyway" in this circumstance. Other options you could use
-" here:
-" 'q' - quit.
-" 'o' - open the file in read-only mode.
-" 'r' - recover the changes.
-augroup SimultaneousEdits
-  autocmd!
-  autocmd SwapExists * :let v:swapchoice = 'e'
-augroup END
-
-" \ is leader
-let mapleader = ' '
-let maplocalleader = '\\'
-
-"" Matchit
-"""""""""""""""
-runtime macros/matchit.vim
 
 ""Syntastic
 
@@ -261,15 +250,13 @@ let g:ctrlp_custom_ignore= {
 let g:ctrlp_root_markers = ['.p4rc']
 
 "" Hardtime
-let g:hardtime_default_on = 0
+let g:hardtime_default_on = 1
 " Don't stop directional motion in quickfix buffer
 let g:hardtime_ignore_quickfix = 1
 
 "" Racer
 set hidden
 let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
-
-set omnifunc=syntaxcomplete#Complete
 
 "" YouCompleteMe
 " Load .ycm_extra_conf without prompting
@@ -295,9 +282,6 @@ let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 " close the preview window when leaving insert mode
 let g:ycm_autoclose_preview_window_after_insertion = 1
-
-" Seed normal omnicomplete dbs
-set omnifunc=syntaxcomplete#Complete
 
 "" Clang-format
 let g:clang_format#detect_style_file = 1
