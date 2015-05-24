@@ -11,7 +11,11 @@ elif [ `uname -o` = "GNU/Linux" ]; then
 elif [ `uname` = "FreeBSD" ]; then
   eval "$(rbenv init -)"
   alias ls='ls -GhF'
-  alias doall="jls | grep -v JID | awk '{ print \$1 }' | xargs -I {} sudo jexec {} "
+  function doall() {
+    sudo "$@"
+    local jails="$(jls | grep -v JID | awk '{ print $1 }')"
+    echo "${jails}" | xargs -I {} sudo jexec {} "$@"
+  }
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/llvm36/lib/
 fi
 
