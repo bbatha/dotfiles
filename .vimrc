@@ -136,6 +136,40 @@ autocmd BufReadPost *
       \ exe "normal! g`\"" |
       \ endif
 
+" joining
+" delete comment character when joining commented lines
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j
+endif
+
+" only 1 space after "." when joining
+set nojoinspaces
+
+" joining with indents is useless. clean them up automatically
+nnoremap gJ Jdiw
+
+"Command line
+
+" display incomplete commands below the status line
+set showcmd
+
+" Default shell and shell syntex
+set shell=bash
+let g:is_bash=1
+
+" performance
+
+" time out on key codes but not mappings
+set notimeout
+set ttimeout
+set ttimeoutlen=100
+
+" update syntax highlighting for more lines helps scrolling permformance
+syntax sync minlines=256
+
+" don't syntax highlight long lines
+set synmaxcol=256
+
 """"""""""""""""""""""""""""""""""""""""
 "" settings controlling temporary/backup files
 """"""""""""""""""""""""""""""""""""""""
