@@ -94,6 +94,9 @@ set expandtab
 
 set autoread " automatically reload a file if it's changed outside vim
 
+" Always leave x lines between the cursor and the bottom of the screen
+set scrolloff=6
+
 " wrap settings
 set nowrap " wrap lines rather than use horiz. scrolling
 set linebreak " try not to wrap in the middle of a word
@@ -271,6 +274,10 @@ let g:ctrlp_root_markers = ['.p4rc']
 let g:hardtime_default_on = 1
 " Don't stop directional motion in quickfix buffer
 let g:hardtime_ignore_quickfix = 1
+" Different keys are ok
+let g:hardtime_allow_different_key = 1
+" 2 key presses is reasonable 2j is the same number of keypresses as jj
+let g:hardtime_maxcount = 2
 
 "" Racer
 let g:racer_cmd = "$HOME/.vim/bundle/racer/target/release/racer"
