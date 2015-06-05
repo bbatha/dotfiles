@@ -62,15 +62,15 @@ export MANPATH=$PREFIX/man:$MANPATH
 export INFOPATH=$PREFIX/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
 
-# use system ca certs with pkgsrc curl
-export CURL_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
-
 # rbenv
 export PATH=$HOME/.rbenv/bin:$PATH
 eval "$(rbenv init -)"
 
 # Scratch directory
 export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
+
+# Make grep colorful
+export GREP_OPTIONS='--color=auto'
 
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
