@@ -28,8 +28,6 @@ Plug 'Valloric/YouCompleteMe', {
       \'do': './install.sh --clang-completer'
         \+ '$([ $(uname) = \"FreeBSD\" ] && echo \"--system-libclang --system-boost\")'
     \}
-Plug 'SirVer/ultisnips' " snippets engine
-Plug 'honza/vim-snippets' " snippets library
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
@@ -306,17 +304,3 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:clang_format#detect_style_file = 1
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-
-"" UltiSnips
-" make ultisnips and ycm play ball
-let g:UltiSnipsExpandTrigger = "<nop>"
-let g:ulti_expand_or_jump_res = 0
-function ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return "\<CR>"
-    endif
-endfunction
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
