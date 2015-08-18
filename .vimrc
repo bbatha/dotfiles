@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'altercation/vim-colors-solarized' " pretty colors
 Plug 'bling/vim-airline' " pretty status bar
 Plug 'takac/vim-hardtime' " training to stop using hjkl
+Plug 'tpope/vim-unimpaired' " The missing shortcuts
 
 " Languages
 Plug 'tpope/vim-haml', { 'for': 'haml' } " haml syntax highlighting
@@ -24,10 +25,7 @@ Plug 'rhysd/vim-clang-format', { 'for': ['c', 'cpp', 'objc'] }
 
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
-Plug 'Valloric/YouCompleteMe', {
-      \'do': './install.sh --clang-completer'
-        \+ '$([ $(uname) = \"FreeBSD\" ] && echo \"--system-libclang --system-boost\")'
-    \}
+Plug 'Valloric/YouCompleteMe', { 'do': './install --clang-completer' }
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
@@ -100,7 +98,7 @@ set scrolloff=6
 " wrap settings
 set nowrap " wrap lines rather than use horiz. scrolling
 set linebreak " try not to wrap in the middle of a word
-set textwidth=80 " 80-character lines maximum
+set textwidth=100 " 100-character lines maximum
 
 if &term =~? "^xterm.*"
   set ttyfast
@@ -264,7 +262,7 @@ let g:haskell_tabular = 0
 
 "" ctrlp
 let g:ctrlp_custom_ignore= {
-  \ 'dir': '\v[\/](\.(git|hg|svn))|(node_modules|vendor|bin|rint)$',
+  \ 'dir': '\v[\/](\.(git|hg|svn))|(node_modules|vendor|rint|target)$',
   \ 'file': '\v\.(exe|so|dll|.a)$'
   \ }
 
