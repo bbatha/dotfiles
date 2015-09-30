@@ -96,8 +96,7 @@ unalias p4 >/dev/null 2>/dev/null
 # p4fds2 might be acceptable
 #alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
 # review board uploader
-alias rb1='/home/data/index/script/common/submit_review_board.pl'
-alias rb='~zauclair/submit_review_board_new.pl'
+alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
 alias ls='ls -hF --color=auto'
 # enable x forwarding fwiw
