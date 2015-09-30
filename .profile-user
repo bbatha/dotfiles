@@ -7,6 +7,8 @@
 #
 if [ -e /var/cfengine/classes/nextgen ]
 then
+  # shellcheck disable=1091
+  # 3rd party code
   source /home/fonix/prd_progs/tools/engineering-login.sh
 fi
 
@@ -161,6 +163,8 @@ function cabal() {
 if [[ $PS1 && -f $PREFIX/share/bash-completion/bash_completion ]]
 then
   source "$PREFIX/share/bash-completion/bash_completion"
+  # shellcheck disable=1090
+  # 3rd party script
 fi
 
 # better git log formatting
