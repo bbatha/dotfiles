@@ -54,22 +54,36 @@ shopt -s checkwinsize
 export LANG=en_US.UTF-8
 export P4USER=bbatha
 
-PREFIX=$HOME/pkg
+BBATHA_ROOT=$HOME/pkg
 
 # pkgsrc
 export OLD_PATH=$PATH
-export PATH=$PREFIX/bin:$PREFIX/sbin:$PATH
-export LD_LIBRARY_PATH=$PREFIX/lib
+export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH
+export LD_LIBRARY_PATH=$BBATHA_ROOT/lib
 export PKGSRCDIR=$HOME/opt/pkgsrc
 # add pip
 export PATH=$HOME/.local/bin:$PATH
-export MANPATH=$PREFIX/man:$MANPATH
-export INFOPATH=$PREFIX/share/info:$INFOPATH
-export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+export MANPATH=$BBATHA_ROOT/man:$MANPATH
+export INFOPATH=$BBATHA_ROOT/share/info:$INFOPATH
+export PKG_CONFIG_PATH=$BBATHA_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
 # rbenv
 export PATH=$HOME/.rbenv/bin:$PATH
 eval "$(rbenv init -)"
+
+# nvm
+export NVM_DIR="/home/user/bbatha/.nvm"
+# shellcheck disable=1090
+# don't check the sourced file. Its from a 3rd party
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# shellcheck disable=1090
+# don't check the sourced file. Its from a 3rd party
+[[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+
+function nvm_up() {
+  git -C "$NVM_DIR" pull origin master --tags
+  git -C "$NVM_DIR" rebase --onto "$(git -C "$NVM_DIR" describe --abbrev=0 --tags)" master
+}
 
 # Scratch directory
 export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
@@ -97,11 +111,11 @@ alias be='bundle exec'
 # render escaped color sequences
 alias less='less -R'
 # get pkgsrc vulerabilities
-alias pkgupvuln='$PREFIX/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
+alias pkgupvuln='$BBATHA_ROOT/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
 # gulp colors doesn't work right in solarized terminals
 alias gulp='gulp --no-color'
 # vim with the libstdc++ that supports C++ 11 for YouCompleteMe.
-alias vim='LD_LIBRARY_PATH=$PREFIX/gcc48/lib64:$LD_LIBRARY_PATH vim'
+alias vim='LD_LIBRARY_PATH=$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH vim'
 # p4view --check testing
 alias p4view='/home/fonix/prd_progs/build/cross_platform/testing/p4view_check/p4view'
 # syntax highlighting cat
@@ -160,11 +174,11 @@ function cabal() {
 }
 
 # Add our bash completion scripts
-if [[ $PS1 && -f $PREFIX/share/bash-completion/bash_completion ]]
+if [[ $PS1 && -f "$BBATHA_ROOT/share/bash-completion/bash_completion" ]]
 then
-  source "$PREFIX/share/bash-completion/bash_completion"
   # shellcheck disable=1090
   # 3rd party script
+  source "$BBATHA_ROOT/share/bash-completion/bash_completion"
 fi
 
 # better git log formatting
