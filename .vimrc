@@ -260,13 +260,26 @@ let g:haskell_conceal = 0
 let g:haskell_conceal_enumerations = 0
 let g:haskell_tabular = 0
 
-"" ctrlp
-let g:ctrlp_custom_ignore= {
-  \ 'dir': '\v[\/](\.(git|hg|svn))|(node_modules|vendor|rint|target)$',
-  \ 'file': '\v\.(exe|so|dll|.a)$'
+"" CtrlP
+let g:ctrlp_custom_ignore = {
+  \   'dir':  '\.git$\|\.hg$\|\.svn$',
+  \   'file': '\.exe$\|\.so$\|\.dll$|\.a$'
+  \ }
+
+"" Use source control to search for increased speed and so that
+"" ignore files are respected
+let g:ctrlp_user_command = {
+  \ 'types': {
+  \   1: ['.git', 'cd %s && git ls-files'],
+  \   2: ['.hg', 'hg --cwd %s locate -I .'],
+  \   3: ['.p4rc', "cd %s && p4 have | awk '{ print $3 }'"],
+  \ },
+  \   'fallback': 'find %s -type f'
   \ }
 
 let g:ctrlp_root_markers = ['.p4rc']
+
+let g:ctrlp_use_caching = 0
 
 "" Hardtime
 let g:hardtime_default_on = 1
