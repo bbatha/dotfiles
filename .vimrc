@@ -25,7 +25,7 @@ Plug 'rhysd/vim-clang-format', { 'for': ['c', 'cpp', 'objc'] }
 
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
-Plug 'Valloric/YouCompleteMe', { 'do': './install --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
