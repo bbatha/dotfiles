@@ -56,9 +56,11 @@ export P4USER=bbatha
 
 BBATHA_ROOT=$HOME/pkg
 
+# ensure these don't get reset when we source .profile-user
+[ -z "$OLD_PATH" ] && export OLD_PATH=$PATH
+[ -z "$OLD_LD_LIBRARY_PATH" ] && export OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 # pkgsrc
-export OLD_PATH=$PATH
-export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH
+export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH:$HOME/.multirust/toolchains/nightly/cargo/bin
 export LD_LIBRARY_PATH=$BBATHA_ROOT/lib
 export PKGSRCDIR=$HOME/opt/pkgsrc
 # add pip
@@ -73,12 +75,16 @@ eval "$(rbenv init -)"
 
 # nvm
 export NVM_DIR="/home/user/bbatha/.nvm"
-# shellcheck disable=1090
-# don't check the sourced file. Its from a 3rd party
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-# shellcheck disable=1090
-# don't check the sourced file. Its from a 3rd party
-[[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+# Not enough heap space on unixscrn boxes
+if [[ "$(hostname)" != "unixscrn"* ]]
+then
+  # shellcheck disable=1090
+  # don't check the sourced file. Its from a 3rd party
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+  # shellcheck disable=1090
+  # don't check the sourced file. Its from a 3rd party
+  [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+fi
 
 function nvm_up() {
   git -C "$NVM_DIR" pull origin master --tags
@@ -94,7 +100,7 @@ export GREP_OPTIONS='--color=auto'
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
 # p4fds2 might be acceptable
-#alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
 # review board uploader
 alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
@@ -114,16 +120,22 @@ alias pkgupvuln='$BBATHA_ROOT/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulne
 # gulp colors doesn't work right in solarized terminals
 alias gulp='gulp --no-color'
 # vim with the libstdc++ that supports C++ 11 for YouCompleteMe.
-alias vim='LD_LIBRARY_PATH=$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH vim'
+#alias vim='LD_LIBRARY_PATH=$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH vim'
 # p4view --check testing
 alias p4view='/home/fonix/prd_progs/build/cross_platform/testing/p4view_check/p4view'
 # syntax highlighting cat
 alias ccat='pygmentize -g'
-# make the platform command use system curl
-alias platform='PATH=$OLD_PATH platform'
 # use neovim
-alias vim="nvim"
-alias vimdiff="nvimdiff"
+alias vim='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim'
+alias vimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvimdiff'
+
+# platform doesn't work with pkgsrc's curl libs force it to use
+# the system binary + libs
+function platform() { (
+  export PATH="$OLD_PATH"
+  export LD_LIBRARY_PATH="$OLD_LD_LIBRARY_PATH"
+  command platform "$@"
+)}
 
 # syntax highlighting less
 function cless() {

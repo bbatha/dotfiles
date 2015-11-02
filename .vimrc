@@ -3,7 +3,7 @@ filetype off                   " required!
 
 call plug#begin('~/.vim/plugged')
 " UI enhancements
-Plug 'altercation/vim-colors-solarized' " pretty colors
+Plug 'chriskempson/base16-vim' " better syntax colors
 Plug 'bling/vim-airline' " pretty status bar
 Plug 'takac/vim-hardtime' " training to stop using hjkl
 Plug 'tpope/vim-unimpaired' " The missing shortcuts
@@ -25,12 +25,13 @@ Plug 'rhysd/vim-clang-format', { 'for': ['c', 'cpp', 'objc'] }
 
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " rust autocompletion
 Plug 'phildawes/racer', { 'for': 'rust', 'do': 'cargo build --release' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
 " Motion
 Plug 'camelcasemotion' " Motion for camelcase words
@@ -38,7 +39,7 @@ Plug 'tpope/vim-surround' " edit surronding tags of text object
 Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 
 " Time savers
-Plug 'kien/ctrlp.vim' " fuzzy filename matching.
+Plug 'ctrlpvim/ctrlp.vim' " fuzzy filename matching.
 
 " Dev tools
 Plug 'scrooloose/syntastic' " syntax checker
@@ -98,7 +99,7 @@ set scrolloff=6
 " wrap settings
 set nowrap " wrap lines rather than use horiz. scrolling
 set linebreak " try not to wrap in the middle of a word
-set textwidth=100 " 100-character lines maximum
+set textwidth=99 " 99-character lines maximum
 
 if &term =~? "^xterm.*"
   set ttyfast
@@ -217,18 +218,17 @@ command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 let g:airline_theme = 'powerlineish'
 
 if has("gui_running")
-  set guifont=Meslo\ LG\ S\ DZ\ for\ Powerline\ Medium\ 10
   set guioptions=ac
   set columns=120
   set lines=60
-  let g:solarized_termcolors=256
+  set base16colorspace=256
 else
-  let g:solarized_termcolors=16
   let g:airline_powerline_fonts = 1
 endif
 
+let base16colorspace=256
 set background=dark
-colorscheme solarized
+colorscheme base16-solarized
 
 " \ is leader
 let mapleader = ' '
