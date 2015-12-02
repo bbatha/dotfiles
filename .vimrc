@@ -15,13 +15,10 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 " mustache/handlebars template support
 Plug 'mustache/vim-mustache-handlebars', { 'for': ['handlebars', 'mustache'] }
 Plug 'c9s/perlomni.vim', { 'for': 'perl' }  " better perl completion engine
-Plug 'sql.vim' " better sql support
 Plug 'dag/vim2hs', { 'for': 'haskell' } " better haskell syntax highlighting
 Plug 'wting/rust.vim', { 'for': 'rust' } " rust syntax
 Plug 'cespare/vim-toml', { 'for': 'toml' } " toml syntax
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffee script' } " coffee script
-" Format clang compatible languages
-Plug 'rhysd/vim-clang-format', { 'for': ['c', 'cpp', 'objc'] }
+Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown
 
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
@@ -32,6 +29,7 @@ Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " rust autocompletion
 Plug 'phildawes/racer', { 'for': 'rust', 'do': 'cargo build --release' }
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' } " js autocomplete
 
 " Motion
 Plug 'camelcasemotion' " Motion for camelcase words
@@ -322,3 +320,8 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:clang_format#detect_style_file = 1
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+"" markdown
+" vim thinks md files are modula2 by default
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'javascript', 'bash=sh']
