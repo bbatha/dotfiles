@@ -27,7 +27,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " rust autocompletion
 Plug 'racer-rust/vim-racer', { 'for': 'rust' } " requires racer to be cargo installed
-Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' } " js autocomplete
+Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'nvm use stable; npm install' } " js autocomplete
 
 " Motion
 Plug 'camelcasemotion' " Motion for camelcase words
