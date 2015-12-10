@@ -40,7 +40,7 @@ Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy filename matching.
 
 " Dev tools
-Plug 'scrooloose/syntastic' " syntax checker
+Plug 'benekastah/neomake' " syntax checker
 Plug 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 
 call plug#end()
@@ -241,17 +241,16 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 "" Ag - the_silver_searcher
 let g:agprg='ag --column'
 
-""Syntastic
+"" Neomake
+autocmd! BufEnter * Neomake
+autocmd! BufWritePost * Neomake
+let g:neomake_javascript_enabled_markers = ['jshint', 'jscs']
 
 " Fix quickfix list to wrap
 autocmd FileType qf setlocal wrap linebreak
 nnoremap <leader>e :Errors<CR>
 nnoremap <leader>n :lnext<CR>
 nnoremap <leader>N :lprev<CR>
-let g:syntastic_enable_balloons = 0
-" potentially risky. it will run BEGIN, UNITCHECK, CHECK blocks and use
-" statements
-let g:syntastic_enable_perl_checker = 1
 
 "" vim2hs
 let g:haskell_conceal = 0

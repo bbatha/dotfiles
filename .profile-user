@@ -28,9 +28,9 @@ export DISPLAY="${ME}pc.pc.factset.com:0.0"
 stty -ixon -ixoff
 
 # Use the unix standard editor
-export EDITOR=vim
-export P4EDITOR=vim
-export P4MERGE=vimdiff
+export EDITOR=nvim
+export P4EDITOR=nvim
+export P4MERGE=nvimdiff
 
 # : user@hostname[$PWD] ;
 # use : PS1 ; format so that it can be a no-op when pasted
@@ -60,7 +60,7 @@ BBATHA_ROOT=$HOME/pkg
 [ -z "$OLD_PATH" ] && export OLD_PATH=$PATH
 [ -z "$OLD_LD_LIBRARY_PATH" ] && export OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 # pkgsrc
-export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH:$HOME/.multirust/toolchains/nightly/cargo/bin
+export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH
 export LD_LIBRARY_PATH=$BBATHA_ROOT/lib
 export PKGSRCDIR=$HOME/opt/pkgsrc
 # add pip
@@ -69,21 +69,24 @@ export MANPATH=$BBATHA_ROOT/man:$MANPATH
 export INFOPATH=$BBATHA_ROOT/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$BBATHA_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
-# rbenv
-export PATH=$HOME/.rbenv/bin:$PATH
-eval "$(rbenv init -)"
-
-# nvm
-export NVM_DIR="/home/user/bbatha/.nvm"
-# Not enough heap space on unixscrn boxes
+# Don't need latest ruby or node on scrn hosts
 if [[ "$(hostname)" != "unixscrn"* ]]
 then
+  # rbenv
+  export PATH=$HOME/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
+
+  # nvm
+  export NVM_DIR="/home/user/bbatha/.nvm"
   # shellcheck disable=1090
   # don't check the sourced file. Its from a 3rd party
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
   # shellcheck disable=1090
   # don't check the sourced file. Its from a 3rd party
   [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+
+  # multirust
+  export PATH=$PATH:$HOME/.multirust/bin:$HOME/.multirust/cargo/bin
 fi
 
 function nvm_up() {
@@ -100,7 +103,7 @@ export GREP_OPTIONS='--color=auto'
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
 # p4fds2 might be acceptable
-alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
+# alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
 # review board uploader
 alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
@@ -128,6 +131,8 @@ alias ccat='pygmentize -g'
 # use neovim
 alias vim='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim'
 alias vimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvimdiff'
+# grant some lima tokens
+alias lima-curl='curl -H "$(/home/fds/svc_lima/bin/lima_token $USER FDS | tr -d '\''\r'\'')"'
 
 # platform doesn't work with pkgsrc's curl libs force it to use
 # the system binary + libs
@@ -146,23 +151,13 @@ function cless() {
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
-  local p4fds2='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
-
-  if [ -e "${p4fds2}" ]
-  then
-    local p4="${p4fds2}"
-  else
-    local p4
-    p4="$(which p4)"
-  fi
-
   # use command p4 when not using p4fds
   case "$*" in
-    vdiff2* ) shift 1; P4DIFF=vimdiff $p4 diff2 "$@" ;;
-    vdiff* ) shift 1; P4DIFF=vimdiff $p4 diff "$@" ;;
-    diff2* ) shift 1; P4DIFF=colordiff $p4 diff2 -du "$@" ;;
-    diff* ) shift 1; P4DIFF=colordiff $p4 diff -du "$@" ;;
-    * ) $p4 "$@" ;;
+    vdiff2* ) shift 1; P4DIFF=vimdiff command p4 diff2 "$@" ;;
+    vdiff* ) shift 1; P4DIFF=vimdiff command p4 diff "$@" ;;
+    diff2* ) shift 1; P4DIFF=colordiff command p4 diff2 -du "$@" ;;
+    diff* ) shift 1; P4DIFF=colordiff command p4 diff -du "$@" ;;
+    * ) command p4 "$@" ;;
   esac
 }
 
