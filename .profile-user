@@ -68,6 +68,7 @@ export PATH=$HOME/.local/bin:$PATH
 export MANPATH=$BBATHA_ROOT/man:$MANPATH
 export INFOPATH=$BBATHA_ROOT/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$BBATHA_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
+export XDG_CONFIG_HOME=$HOME/.config
 
 # Don't need latest ruby or node on scrn hosts
 if [[ "$(hostname)" != "unixscrn"* ]]

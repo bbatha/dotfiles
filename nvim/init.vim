@@ -26,8 +26,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " rust autocompletion
-Plug 'phildawes/racer', { 'for': 'rust', 'do': 'cargo build --release' }
-Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' } " requires racer to be cargo installed
 Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' } " js autocomplete
 
 " Motion
