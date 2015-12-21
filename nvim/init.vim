@@ -1,6 +1,4 @@
-filetype off                   " required!
-
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 " UI enhancements
 Plug 'chriskempson/base16-vim' " better syntax colors
 Plug 'bling/vim-airline' " pretty status bar
@@ -30,21 +28,20 @@ Plug 'racer-rust/vim-racer', { 'for': 'rust' } " requires racer to be cargo inst
 Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'nvm use stable; npm install' } " js autocomplete
 
 " Motion
-Plug 'camelcasemotion' " Motion for camelcase words
+Plug 'bkad/camelcasemotion' " Motion for camelcase words
 Plug 'tpope/vim-surround' " edit surronding tags of text object
 Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 
 " Time savers
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy filename matching.
+Plug 'AndrewRadev/splitjoin.vim' " Split function lists
 
 " Dev tools
 Plug 'benekastah/neomake' " syntax checker
 Plug 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
-
 call plug#end()
 
 syntax on
-filetype plugin indent on
 set hidden
 set encoding=utf-8
 set fileformat=unix

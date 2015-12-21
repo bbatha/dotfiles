@@ -121,8 +121,6 @@ alias be='bundle exec'
 alias less='less -R'
 # get pkgsrc vulerabilities
 alias pkgupvuln='$BBATHA_ROOT/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
-# gulp colors doesn't work right in solarized terminals
-alias gulp='gulp --no-color'
 # vim with the libstdc++ that supports C++ 11 for YouCompleteMe.
 #alias vim='LD_LIBRARY_PATH=$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH vim'
 # p4view --check testing
