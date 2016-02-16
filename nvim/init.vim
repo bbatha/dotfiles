@@ -1,7 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
 " UI enhancements
 Plug 'chriskempson/base16-vim' " better syntax colors
-Plug 'bling/vim-airline' " pretty status bar
+Plug 'vim-airline/vim-airline' " pretty status bar
 Plug 'takac/vim-hardtime' " training to stop using hjkl
 Plug 'tpope/vim-unimpaired' " The missing shortcuts
 
@@ -19,13 +19,15 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown
 
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+Plug 'Valloric/YouCompleteMe', {
+      \ 'do': 'nvm use stable; ./install.py'
+      \ + ' --clang-completer --system-libclang --tern-completer'
+      \}
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " rust autocompletion
 Plug 'racer-rust/vim-racer', { 'for': 'rust' } " requires racer to be cargo installed
-Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'nvm use stable; npm install' } " js autocomplete
 
 " Motion
 Plug 'bkad/camelcasemotion' " Motion for camelcase words
@@ -33,12 +35,12 @@ Plug 'tpope/vim-surround' " edit surronding tags of text object
 Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 
 " Time savers
-Plug 'ctrlpvim/ctrlp.vim' " fuzzy filename matching.
 Plug 'AndrewRadev/splitjoin.vim' " Split function lists
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " Dev tools
 Plug 'benekastah/neomake' " syntax checker
-Plug 'rking/ag.vim' " ag support -- may switch to ack the plugin seems better
 call plug#end()
 
 syntax on
@@ -201,9 +203,6 @@ let maplocalleader = '\\'
 
 ""Enable repeat.vim
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
-
-"" Ag - the_silver_searcher
-let g:agprg='ag --column'
 
 "" Neomake
 autocmd! BufEnter * Neomake

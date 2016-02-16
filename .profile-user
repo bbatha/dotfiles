@@ -78,6 +78,7 @@ then
   eval "$(rbenv init -)"
 
   # nvm
+  export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
   export NVM_DIR="/home/user/bbatha/.nvm"
   # shellcheck disable=1090
   # don't check the sourced file. Its from a 3rd party
@@ -129,7 +130,7 @@ alias p4view='/home/fonix/prd_progs/build/cross_platform/testing/p4view_check/p4
 alias ccat='pygmentize -g'
 # use neovim
 alias vim='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim'
-alias vimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvimdiff'
+alias vimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim -d'
 # grant some lima tokens
 alias lima-curl='curl -H "$(/home/fds/svc_lima/bin/lima_token $USER FDS | tr -d '\''\r'\'')"'
 
@@ -150,12 +151,16 @@ function cless() {
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
+  p4fds2=/home/fonix/prd_progs/build/cross_platform/testing/p4fds2/p4fds2
+  # shellcheck disable=2016
+  # we want late expansion
+  local nvimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim -d'
   # use command p4 when not using p4fds
   case "$*" in
-    vdiff2* ) shift 1; P4DIFF=vimdiff command p4 diff2 "$@" ;;
-    vdiff* ) shift 1; P4DIFF=vimdiff command p4 diff "$@" ;;
-    diff2* ) shift 1; P4DIFF=colordiff command p4 diff2 -du "$@" ;;
-    diff* ) shift 1; P4DIFF=colordiff command p4 diff -du "$@" ;;
+    vdiff2* ) shift 1; P4DIFF="$nvimdiff" $p4fds2 diff2 "$@" ;;
+    vdiff* ) shift 1; P4DIFF="$nvimdiff" $p4fds2 diff "$@" ;;
+    diff2* ) shift 1; P4DIFF=colordiff $p4fds2 diff2 -du "$@" ;;
+    diff* ) shift 1; P4DIFF=colordiff $p4fds2 diff -du "$@" ;;
     * ) command p4 "$@" ;;
   esac
 }
