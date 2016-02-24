@@ -1,3 +1,7 @@
 nvim/plugged/*
 nvim/.netrwhist
 nvim/autoload/plug.vim.old
+nvim/autoload/perlomni
+nvim/bin
+nvim/ftplugin/perl
+nvim/record

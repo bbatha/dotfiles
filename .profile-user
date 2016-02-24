@@ -63,7 +63,7 @@ BBATHA_ROOT=$HOME/pkg
 export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH
 export LD_LIBRARY_PATH=$BBATHA_ROOT/lib
 export PKGSRCDIR=$HOME/opt/pkgsrc
-# add pip
+# add pip & stack
 export PATH=$HOME/.local/bin:$PATH
 export MANPATH=$BBATHA_ROOT/man:$MANPATH
 export INFOPATH=$BBATHA_ROOT/share/info:$INFOPATH
