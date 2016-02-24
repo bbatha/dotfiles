@@ -209,7 +209,7 @@ let maplocalleader = '\\'
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 "" Neomake
-autocmd! BufEnter * Neomake
+"autocmd! BufEnter * Neomake "" Async makes this interfere with deopletes pum
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_markers = ['jshint', 'jscs']
 
@@ -273,17 +273,12 @@ inoremap <expr><C-l> deoplete#mappings#refresh()
 " <Tab> completion:
 " 1. If popup menu is visible, select and insert next item
 " 2. Otherwise, if within a snippet, jump to next input
-" 3. Otherwise, if preceding chars are whitespace, insert tab char
-" 4. Otherwise, start manual autocomplete
+" 3. Otherwise, insert tab char
 imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-      \ : (<SID>is_whitespace() ? "\<Tab>"
-      \ : deoplete#mappings#manual_complete()))
+      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<Tab>")
 
 smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-      \ : (<SID>is_whitespace() ? "\<Tab>"
-      \ : deoplete#mappings#manual_complete()))
+      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<Tab>")
 
 inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
 
