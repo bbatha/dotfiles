@@ -2,6 +2,7 @@ call plug#begin('~/.config/nvim/plugged')
 " UI enhancements
 Plug 'chriskempson/base16-vim' " better syntax colors
 Plug 'vim-airline/vim-airline' " pretty status bar
+Plug 'vim-airline/vim-airline-themes'
 Plug 'takac/vim-hardtime' " training to stop using hjkl
 Plug 'tpope/vim-unimpaired' " The missing shortcuts
 
@@ -19,10 +20,7 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown
 
 " General autocomplete. Slows down first launch on host and requires
 " a c++11 compatible libstdc++
-Plug 'Valloric/YouCompleteMe', {
-      \ 'do': 'nvm use stable; ./install.py'
-      \ + ' --clang-completer --system-libclang --tern-completer'
-      \}
+Plug 'Valloric/YouCompleteMe', { 'do': 'nvm use 0.10; ./install.py --all' }
 
 " GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
@@ -220,27 +218,6 @@ let g:haskell_conceal = 0
 let g:haskell_conceal_enumerations = 0
 let g:haskell_tabular = 0
 
-"" CtrlP
-let g:ctrlp_custom_ignore = {
-  \   'dir':  '\.git$\|\.hg$\|\.svn$',
-  \   'file': '\.exe$\|\.so$\|\.dll$|\.a$'
-  \ }
-
-"" Use source control to search for increased speed and so that
-"" ignore files are respected
-let g:ctrlp_user_command = {
-  \ 'types': {
-  \   1: ['.git', 'cd %s && git ls-files'],
-  \   2: ['.hg', 'hg --cwd %s locate -I .'],
-  \   3: ['.p4rc', "cd %s && p4 have | awk '{ print $3 }'"],
-  \ },
-  \   'fallback': 'find %s -type f'
-  \ }
-
-let g:ctrlp_root_markers = ['.p4rc']
-
-let g:ctrlp_use_caching = 0
-
 "" Hardtime
 let g:hardtime_default_on = 1
 " Don't stop directional motion in quickfix buffer
@@ -287,3 +264,9 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 " vim thinks md files are modula2 by default
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'javascript', 'bash=sh']
+
+"fzf
+noremap <C-p> :Files<CR>
+let g:fzf_layout = { 'down': '~20%' }
+
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
