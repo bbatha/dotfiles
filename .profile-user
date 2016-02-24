@@ -169,20 +169,6 @@ function ruby-build() {
   command ruby-build "$1"
 }
 
-function cabal() {
-  case "$*" in
-    update* )
-      shift 1
-      # stackage provides snapshots of hackage where all of the packages can
-      # build against each other
-      # see https://www.fpcomplete.com/blog/2014/12/backporting-bug-fixes
-      wget 'http://www.stackage.org/lts/cabal.config?global=true' -O "$HOME/.cabal/cabal.config"
-      command cabal update "$@"
-      ;;
-    * ) command cabal "$@" ;;
-  esac
-}
-
 # Add our bash completion scripts
 if [[ $PS1 && -f "$BBATHA_ROOT/share/bash-completion/bash_completion" ]]
 then
