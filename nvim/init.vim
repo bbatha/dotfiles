@@ -91,9 +91,6 @@ set nowrap " wrap lines rather than use horiz. scrolling
 set linebreak " try not to wrap in the middle of a word
 set textwidth=99 " 99-character lines maximum
 
-" Seed normal omnicomplete dbs
-set omnifunc=syntaxcomplete#Complete
-
 "" Matchit
 """""""""""""""
 runtime macros/matchit.vim
@@ -209,7 +206,9 @@ let maplocalleader = '\\'
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 "" Neomake
-"autocmd! BufEnter * Neomake "" Async makes this interfere with deopletes pum
+" Deoplete brings up docs in a buffer, if the buffer comes up while pumvisible neomake
+" beats out the autocompletion and closes the pum
+autocmd! BufEnter * if pumvisible() == 0 | Neomake | endif
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_markers = ['jshint', 'jscs']
 
@@ -290,7 +289,7 @@ imap <silent><expr><CR> pumvisible() ?
       \ : "\<CR>"
 
 " automatically close the 'documentation' scratch buffer
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+autocmd! InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 """ Echodoc
 set cmdheight=2
