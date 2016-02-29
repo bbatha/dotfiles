@@ -1,0 +1,35 @@
+[user]
+	name = Ben Batha
+	email = bbatha@factset.com
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+	co = checkout
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[color]
+	ui = true
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[push]
+	default = simple
+	followTags = true
+[merge]
+	conflictstyle = diff3
+[apply]
+	whitespace = warn
+[core]
+	editor = nvim
+[branch]
+	autosetuprebase = always
+[http]
+	sslVerify = true
+	sslCAinfo = /etc/pki/tls/certs/ca-bundle.crt
+[pull]
+	default = simple
+	rebase = true
+[rebase]
+	autosquash = true

@@ -177,7 +177,4 @@ then
   source "$BBATHA_ROOT/share/bash-completion/bash_completion"
 fi
 
-# better git log formatting
-git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit"
-
 export RUST_SRC_PATH="${HOME}/pkg/src/rust/src"
