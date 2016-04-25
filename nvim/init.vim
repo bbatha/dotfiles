@@ -31,7 +31,8 @@ Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 " Go omnibus package
 Plug 'fatih/vim-go', { 'for': 'go' }
 
-Plug 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 
 " Motion
 Plug 'bkad/camelcasemotion' " Motion for camelcase words
@@ -254,4 +255,4 @@ let g:fzf_layout = { 'down': '~20%' }
 
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
-set updatetime=250 " Update every 250ms for gitgutter
+let g:signify_vcs_list = [ 'git', 'perforce' ]
