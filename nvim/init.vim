@@ -17,21 +17,21 @@ Plug 'wting/rust.vim', { 'for': 'rust' } " rust syntax
 Plug 'cespare/vim-toml', { 'for': 'toml' } " toml syntax
 Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown
 
-" Don't forget to run UpdateRemotePlugins
-Plug 'Shougo/deoplete.nvim' " autocompletion engine
-" make files with different extensions for the same language valid omni sources
-Plug 'Shougo/context_filetype.vim'
-Plug 'Shougo/echodoc.vim' " Prints documentation you completed
-Plug 'Shougo/neoinclude.vim' " Includes completion candidates from included files
-Plug 'Shougo/neco-syntax' " Syntax omni source
-
-Plug 'Shougo/neosnippet.vim' " Snippet engine
-Plug 'Shougo/neosnippet-snippets' " Snippet sources
-Plug 'racer-rust/vim-racer', { 'for': 'rust' } " Rust omni source
 Plug 'c9s/perlomni.vim', { 'for': 'perl', 'do': 'make install' }  " Perl omni source
-Plug 'Shougo/neco-vim', { 'for': 'vim' } " vimL omni source
-" JavaScript omni source
-Plug 'ternjs/tern_for_vim', { 'for': 'javascript', 'do': 'nvm use stable; npm install' }
+" General autocomplete. Slows down first launch on host and requires
+" a c++11 compatible libstdc++
+Plug 'Valloric/YouCompleteMe', { 'do': 'nvm use 0.10; ./install.py --system-libclang --all' }
+
+" ghcmod-vim dependency
+Plug 'Shougo/vimproc.vim', { 'for': 'haskell', 'do': 'make' }
+" GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
+Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+
+" Go omnibus package
+Plug 'fatih/vim-go', { 'for': 'go' }
+
+Plug 'airblade/vim-gitgutter'
 
 " Motion
 Plug 'bkad/camelcasemotion' " Motion for camelcase words
@@ -209,7 +209,6 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 " Deoplete brings up docs in a buffer, if the buffer comes up while pumvisible neomake
 " beats out the autocompletion and closes the pum
 autocmd! BufEnter * if pumvisible() == 0 | Neomake | endif
-autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_markers = ['jshint', 'jscs']
 
 " Fix quickfix list to wrap
@@ -232,6 +231,18 @@ let g:hardtime_allow_different_key = 1
 " 2 key presses is reasonable 2j is the same number of keypresses as jj
 let g:hardtime_maxcount = 2
 
+"" YouCompleteMe
+" Load .ycm_extra_conf without prompting
+let g:ycm_confirm_extra_conf = 0
+" Seed the identifiers db with language keywords
+let g:ycm_seed_identifiers_with_syntax = 1
+" close the preview window after completing
+let g:ycm_autoclose_preview_window_after_completion = 1
+" close the preview window when leaving insert mode
+let g:ycm_autoclose_preview_window_after_insertion = 1
+
+nnoremap <silent> <buffer> gb :YcmCompleter GoTo<CR>
+
 "" markdown
 " vim thinks md files are modula2 by default
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -243,54 +254,4 @@ let g:fzf_layout = { 'down': '~20%' }
 
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
-
-""" Deoplete
-let g:deoplete#enable_at_startup = 1
-
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
-
-" Mostly cribbed from https://github.com/rafi/vim-config/blob/master/config/plugins/deoplete.vim
-
-" Movement within 'ins-completion-menu'
-imap <expr><C-j>   pumvisible() ? "\<C-n>" : "\<C-j>"
-imap <expr><C-k>   pumvisible() ? "\<C-p>" : "\<C-k>"
-
-" Scroll pages in menu
-inoremap <expr><C-f> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<Right>"
-inoremap <expr><C-b> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<Left>"
-imap     <expr><C-d> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-imap     <expr><C-u> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-" Undo completion
-inoremap <expr><C-g> deoplete#mappings#undo_completion()
-
-" Redraw candidates
-inoremap <expr><C-l> deoplete#mappings#refresh()
-
-" <Tab> completion:
-" 1. If popup menu is visible, select and insert next item
-" 2. Otherwise, if within a snippet, jump to next input
-" 3. Otherwise, insert tab char
-imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<Tab>")
-
-smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
-      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<Tab>")
-
-inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" <CR>: If popup menu visible, expand snippet or close popup with selection,
-"       Otherwise insert a return
-"       Otherwise, check if within empty pair and use delimitMate.
-imap <silent><expr><CR> pumvisible() ?
-      \ (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
-      \ : "\<CR>"
-
-" automatically close the 'documentation' scratch buffer
-autocmd! InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-""" Echodoc
-set cmdheight=2
-let g:echodoc_enable_at_startup = 1
+set updatetime=250 " Update every 250ms for gitgutter

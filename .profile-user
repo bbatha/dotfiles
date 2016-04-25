@@ -89,6 +89,10 @@ then
 
   # multirust
   export PATH=$PATH:$HOME/.multirust/bin:$HOME/.multirust/cargo/bin
+
+  # Go
+  export GOPATH=$HOME/gocode
+  export PATH=$PATH:$GOPATH/bin
 fi
 
 function nvm_up() {
