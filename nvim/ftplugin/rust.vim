@@ -6,3 +6,5 @@ setlocal textwidth=99
 
 let g:racer_cmd="$HOME/.multirust/cargo/bin/racer"
 let $RUST_SRC_PATH="$HOME/pkg/src/rust"
+
+let g:rustfmt_autosave = 1
