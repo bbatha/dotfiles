@@ -16,13 +16,23 @@ Plug 'dag/vim2hs', { 'for': 'haskell' } " better haskell syntax highlighting
 Plug 'rust-lang/rust.vim', { 'for': 'rust' } " rust syntax
 Plug 'cespare/vim-toml', { 'for': 'toml' } " toml syntax
 Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown
-
-Plug 'c9s/perlomni.vim', { 'for': 'perl', 'do': 'make install' }  " Perl omni source
+Plug 'ternjs/tern_for_vim', { 'for': 'javascript' } " javascript miscellane
+Plug 'Shougo/neosnippet.vim' " snippet engine
+Plug 'Shougo/neosnippet-snippets' " snippet sources
 
 function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote'), 'commit': '8540843ced0c664baece2446fbe2b32822ee87a9' }
+""" deoplete sources
+Plug 'Shougo/neco-vim', { 'for': 'vim' } " viml
+Plug 'Shougo/neoinclude.vim' " included and files in path
+Plug 'Shougo/neco-syntax' " syntax
+Plug 'eagletmt/neco-ghc', { 'for': 'haskell' } " haskell
+Plug 'racer-rust/vim-racer', { 'for': 'rust' } " rust
+Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' } " go
+Plug 'c9s/perlomni.vim', { 'for': 'perl', 'do': 'make install' } " Perl
+Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' } " javascript
 
 " Go omnibus package
 Plug 'fatih/vim-go', { 'for': 'go' }
@@ -226,10 +236,6 @@ let g:hardtime_allow_different_key = 1
 " 2 key presses is reasonable 2j is the same number of keypresses as jj
 let g:hardtime_maxcount = 2
 
-
-"" Deoplete
-let g:deoplete#enable_at_startup
-
 "" markdown
 " vim thinks md files are modula2 by default
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -242,3 +248,42 @@ let g:fzf_layout = { 'down': '~20%' }
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
 let g:signify_vcs_list = [ 'git', 'perforce' ]
+
+"" Deoplete
+let g:deoplete#enable_at_startup = 1
+" Mostly cribbed from https://github.com/rafi/vim-config/blob/master/config/plugins/deoplete.vim
+
+" Movement within 'ins-completion-menu'
+imap <expr><C-j>   pumvisible() ? "\<C-n>" : "\<C-j>"
+imap <expr><C-k>   pumvisible() ? "\<C-p>" : "\<C-k>"
+
+" Scroll pages in menu
+inoremap <expr><C-f> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<Right>"
+inoremap <expr><C-b> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<Left>"
+imap     <expr><C-d> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+imap     <expr><C-u> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+" Undo completion
+inoremap <expr><C-g> deoplete#mappings#undo_completion()
+
+" Redraw candidates
+inoremap <expr><C-l> deoplete#mappings#refresh()
+
+" <Tab> completion:
+" 1. If popup menu is visible, select and insert next item
+" 2. Otherwise, if within a snippet, jump to next input
+" 3. Otherwise, insert tab char
+imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<Tab>")
+
+smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+      \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)" : "\<Tab>")
+
+inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" <CR>: If popup menu visible, expand snippet or close popup with selection,
+"       Otherwise insert a return
+"       Otherwise, check if within empty pair and use delimitMate.
+imap <silent><expr><CR> pumvisible() ?
+      \ (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
+			\ : "\<CR>"

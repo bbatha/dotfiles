@@ -5,3 +5,4 @@ nvim/autoload/perlomni
 nvim/bin
 nvim/ftplugin/perl
 nvim/record
+nvim/.init.vim-rplugin~
