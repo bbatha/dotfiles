@@ -6,6 +6,7 @@
 	co = checkout
 [diff]
 	tool = vimdiff
+	compactionHeuristic = true
 [difftool]
 	prompt = false
 [color]
@@ -37,3 +38,5 @@
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[submodule]
+	fetchJobs = 8

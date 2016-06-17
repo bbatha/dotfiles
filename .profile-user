@@ -69,6 +69,8 @@ export MANPATH=$BBATHA_ROOT/man:$MANPATH
 export INFOPATH=$BBATHA_ROOT/share/info:$INFOPATH
 export PKG_CONFIG_PATH=$BBATHA_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 export XDG_CONFIG_HOME=$HOME/.config
+export PGHOME=$BBATHA_ROOT/psql
+export PGDATA=$PGHOME/data
 
 # Don't need latest ruby or node on scrn hosts
 if [[ "$(hostname)" != "unixscrn"* ]]
@@ -87,8 +89,8 @@ then
   # don't check the sourced file. Its from a 3rd party
   [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
 
-  # multirust
-  export PATH=$PATH:$HOME/.multirust/bin:$HOME/.multirust/cargo/bin
+  # rustup
+  export PATH=$PATH:$HOME/.cargo/bin
 
   # Go
   export GOPATH=$HOME/gocode
@@ -100,7 +102,15 @@ function nvm_up() {
   git -C "$NVM_DIR" rebase --onto "$(git -C "$NVM_DIR" describe --abbrev=0 --tags)" master
 }
 
+function pg_ctl {
+  case "$*" in
+    start* ) shift 1; command pg_ctl start -l "$PGHOME/log" ;;
+    *) command pg_ctl "$@" ;;
+  esac
+}
+
 # Scratch directory
+
 export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
 
 # Make grep colorful
@@ -108,8 +118,6 @@ export GREP_OPTIONS='--color=auto'
 
 # p4fds is an abomination. Nuke it from orbit
 unalias p4 >/dev/null 2>/dev/null
-# p4fds2 might be acceptable
-# alias p4='/home/user/tholzer/src/p4fds/binaries/linux26x86_64/p4fds2'
 # review board uploader
 alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
@@ -155,16 +163,15 @@ function cless() {
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
-  p4fds2=/home/fonix/prd_progs/build/cross_platform/testing/p4fds2/p4fds2
   # shellcheck disable=2016
   # we want late expansion
   local nvimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim -d'
   # use command p4 when not using p4fds
   case "$*" in
-    vdiff2* ) shift 1; P4DIFF="$nvimdiff" $p4fds2 diff2 "$@" ;;
-    vdiff* ) shift 1; P4DIFF="$nvimdiff" $p4fds2 diff "$@" ;;
-    diff2* ) shift 1; P4DIFF=colordiff $p4fds2 diff2 -du "$@" ;;
-    diff* ) shift 1; P4DIFF=colordiff $p4fds2 diff -du "$@" ;;
+    vdiff2* ) shift 1; P4DIFF="$nvimdiff" command p4 diff2 "$@" ;;
+    vdiff* ) shift 1; P4DIFF="$nvimdiff" command p4 diff "$@" ;;
+    diff2* ) shift 1; P4DIFF=colordiff command p4 diff2 -du "$@" ;;
+    diff* ) shift 1; P4DIFF=colordiff command p4 diff -du "$@" ;;
     * ) command p4 "$@" ;;
   esac
 }
@@ -182,3 +189,9 @@ then
 fi
 
 export RUST_SRC_PATH="${HOME}/pkg/src/rust/src"
+
+function update-nvim() {
+  cd "$HOME/sources/neovim" || exit
+  git pull
+  make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX:PATH=$HOME/pkg" install
+}

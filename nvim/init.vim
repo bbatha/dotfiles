@@ -11,27 +11,22 @@ Plug 'tpope/vim-haml', { 'for': 'haml' } " haml syntax highlighting
 " better js highlighting/indenting
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 " mustache/handlebars template support
-Plug 'mustache/vim-mustache-handlebars', { 'for': ['handlebars', 'mustache'] }
+Plug 'mustache/vim-mustache-handlebars', { 'for': ['html.handlebars', 'html.mustache'] }
 Plug 'dag/vim2hs', { 'for': 'haskell' } " better haskell syntax highlighting
-Plug 'wting/rust.vim', { 'for': 'rust' } " rust syntax
+Plug 'rust-lang/rust.vim', { 'for': 'rust' } " rust syntax
 Plug 'cespare/vim-toml', { 'for': 'toml' } " toml syntax
 Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown
 
 Plug 'c9s/perlomni.vim', { 'for': 'perl', 'do': 'make install' }  " Perl omni source
-" General autocomplete. Slows down first launch on host and requires
-" a c++11 compatible libstdc++
-Plug 'Valloric/YouCompleteMe', { 'do': 'nvm use 0.10; ./install.py --system-libclang --all' }
 
-" ghcmod-vim dependency
-Plug 'Shougo/vimproc.vim', { 'for': 'haskell', 'do': 'make' }
-" GHCMOD integration for vim. improves syntastic and autocompletion. can infer types.
-Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
-Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 
 " Go omnibus package
 Plug 'fatih/vim-go', { 'for': 'go' }
 
-"Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-signify'
 
 " Motion
@@ -209,8 +204,7 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 "" Neomake
 " Deoplete brings up docs in a buffer, if the buffer comes up while pumvisible neomake
 " beats out the autocompletion and closes the pum
-autocmd! BufEnter * if pumvisible() == 0 | Neomake | endif
-let g:neomake_javascript_enabled_markers = ['jshint', 'jscs']
+autocmd! BufWritePost * if pumvisible() == 0 | Neomake | endif
 
 " Fix quickfix list to wrap
 autocmd FileType qf setlocal wrap linebreak
@@ -232,17 +226,9 @@ let g:hardtime_allow_different_key = 1
 " 2 key presses is reasonable 2j is the same number of keypresses as jj
 let g:hardtime_maxcount = 2
 
-"" YouCompleteMe
-" Load .ycm_extra_conf without prompting
-let g:ycm_confirm_extra_conf = 0
-" Seed the identifiers db with language keywords
-let g:ycm_seed_identifiers_with_syntax = 1
-" close the preview window after completing
-let g:ycm_autoclose_preview_window_after_completion = 1
-" close the preview window when leaving insert mode
-let g:ycm_autoclose_preview_window_after_insertion = 1
 
-nnoremap <silent> <buffer> gb :YcmCompleter GoTo<CR>
+"" Deoplete
+let g:deoplete#enable_at_startup
 
 "" markdown
 " vim thinks md files are modula2 by default

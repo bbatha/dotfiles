@@ -8,3 +8,4 @@ let g:tern_show_argument_hints = 'on_hold'
 let g:tern_show_signature_in_pum = 1
 
 nnoremap <silent> <buffer> gb :TernDef<CR>
+let g:neomake_javascript_enabled_markers = ['jshint', 'jscs']

@@ -6,9 +6,10 @@ setlocal textwidth=120
 
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_operators = 1
+" Beautiful but sluggish
+"let g:go_highlight_structs = 1
+"let g:go_highlight_interfaces = 1
+"let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
 let g:go_fmt_command = "goimports"
@@ -25,7 +26,7 @@ let g:neomake_go_gometalinter_maker = {
         \ '%W%f:%l::warning: %m'
       \ }
 
-let g:neomake_go_enabled_makers = [ 'gometalinter' ]
+"let g:neomake_go_enabled_makers = [ 'gometalinter' ]
 
 nmap <leader>b <Plug>(go-build)
 nmap <leader>t <Plug>(go-test)
