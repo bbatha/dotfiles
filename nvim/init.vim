@@ -23,7 +23,7 @@ Plug 'Shougo/neosnippet-snippets' " snippet sources
 function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote'), 'commit': '8540843ced0c664baece2446fbe2b32822ee87a9' }
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 """ deoplete sources
 Plug 'Shougo/neco-vim', { 'for': 'vim' } " viml
 Plug 'Shougo/neoinclude.vim' " included and files in path
@@ -198,8 +198,7 @@ else
 endif
 
 let base16colorspace=256
-set background=dark
-colorscheme base16-solarized
+colorscheme base16-solarized-dark
 
 " \ is leader
 let mapleader = ' '
