@@ -199,6 +199,7 @@ endif
 
 let base16colorspace=256
 colorscheme base16-solarized-dark
+set background=dark
 
 " \ is leader
 let mapleader = ' '

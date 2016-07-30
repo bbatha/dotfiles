@@ -32,7 +32,7 @@
 	autosetuprebase = always
 [http]
 	sslVerify = true
-	sslCAinfo = /etc/pki/tls/certs/ca-bundle.crt
+  #sslCAinfo = /etc/pki/tls/certs/ca-bundle.crt
 [pull]
 	default = simple
 	rebase = true

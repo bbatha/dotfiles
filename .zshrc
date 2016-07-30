@@ -460,3 +460,5 @@ zsh-mime-setup
 
 #}}}
 alias submodule-update='git submodule foreach git pull'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
