@@ -30,7 +30,7 @@ stty -ixon -ixoff
 # Use the unix standard editor
 export EDITOR=nvim
 export P4EDITOR=nvim
-export P4MERGE=nvimdiff
+export P4MERGE='nvim -d'
 
 # : user@hostname[$PWD] ;
 # use : PS1 ; format so that it can be a no-op when pasted
@@ -54,53 +54,48 @@ shopt -s checkwinsize
 export LANG=en_US.UTF-8
 export P4USER=bbatha
 
-BBATHA_ROOT=$HOME/pkg
 
-# ensure these don't get reset when we source .profile-user
-[ -z "$OLD_PATH" ] && export OLD_PATH=$PATH
-[ -z "$OLD_LD_LIBRARY_PATH" ] && export OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-# pkgsrc
-export PATH=$BBATHA_ROOT/bin:$BBATHA_ROOT/sbin:$PATH
-export LD_LIBRARY_PATH=$BBATHA_ROOT/lib
-export PKGSRCDIR=$HOME/opt/pkgsrc
-# add pip & stack
-export PATH=$HOME/.local/bin:$PATH
-export MANPATH=$BBATHA_ROOT/man:$MANPATH
-export INFOPATH=$BBATHA_ROOT/share/info:$INFOPATH
-export PKG_CONFIG_PATH=$BBATHA_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
-export XDG_CONFIG_HOME=$HOME/.config
-export PGHOME=$BBATHA_ROOT/psql
-export PGDATA=$PGHOME/data
+unset LD_LIBRARY_PATH
+
+export PATH="$HOME/.linuxbrew/bin:$PATH"
+# shellcheck disable=2155
+export PATH="$(brew --prefix)/sbin:$PATH"
+# shellcheck disable=2155
+export MANPATH="$(brew --prefix)/share/man:$MANPATH"
+# shellcheck disable=2155
+export INFOPATH="$(brew --prefix)/share/info:$INFOPATH"
+
+export PATH="$HOME/.local/bin:$PATH"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # Don't need latest ruby or node on scrn hosts
 if [[ "$(hostname)" != "unixscrn"* ]]
 then
   # rbenv
-  export PATH=$HOME/.rbenv/bin:$PATH
   eval "$(rbenv init -)"
 
   # nvm
-  export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
-  export NVM_DIR="/home/user/bbatha/.nvm"
+  export NVM_DIR="$HOME/.nvm"
   # shellcheck disable=1090
-  # don't check the sourced file. Its from a 3rd party
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-  # shellcheck disable=1090
-  # don't check the sourced file. Its from a 3rd party
-  [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+  . "$(brew --prefix nvm)/nvm.sh"
 
   # rustup
-  export PATH=$PATH:$HOME/.cargo/bin
+  export PATH="$PATH:$HOME/.cargo/bin"
+  export RUST_SRC_PATH="$HOME/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 
   # Go
   export GOPATH=$HOME/gocode
   export PATH=$PATH:$GOPATH/bin
+
+  if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
+    # shellcheck disable=1090
+    . "$(brew --prefix)/etc/bash_completion"
+  fi
+
+  export PGHOME="$HOME/.local/psql"
+  export PGDATA="$PGHOME/data"
 fi
 
-function nvm_up() {
-  git -C "$NVM_DIR" pull origin master --tags
-  git -C "$NVM_DIR" rebase --onto "$(git -C "$NVM_DIR" describe --abbrev=0 --tags)" master
-}
 
 function pg_ctl {
   case "$*" in
@@ -110,7 +105,6 @@ function pg_ctl {
 }
 
 # Scratch directory
-
 export SCRATCH_HOME=/home/dev/scratch/developers/bbatha
 
 # Make grep colorful
@@ -122,7 +116,7 @@ unalias p4 >/dev/null 2>/dev/null
 alias rb='/home/data/index/script/common/submit_review_board.pl'
 # use ls colors and prefix symbols for executable, and folders
 alias ls='ls -hF --color=auto'
-# enable x forwarding fwiw
+# enable x forwarding
 alias ssh='ssh -X'
 # pub build tool
 alias pub='/home/dev/build/pub/bin/pub'
@@ -132,27 +126,14 @@ alias tmux='ulimit -c 0; command tmux'
 alias be='bundle exec'
 # render escaped color sequences
 alias less='less -R'
-# get pkgsrc vulerabilities
-alias pkgupvuln='$BBATHA_ROOT/sbin/pkg_admin -K ~/pkg/var/db/pkg fetch-pkg-vulnerabilities >/dev/null 2>&1'
-# vim with the libstdc++ that supports C++ 11 for YouCompleteMe.
-#alias vim='LD_LIBRARY_PATH=$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH vim'
+# neovim
+alias vim='nvim'
 # p4view --check testing
 alias p4view='/home/fonix/prd_progs/build/cross_platform/testing/p4view_check/p4view'
 # syntax highlighting cat
 alias ccat='pygmentize -g'
-# use neovim
-alias vim='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim'
-alias vimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim -d'
 # grant some lima tokens
 alias lima-curl='curl -H "$(/home/fds/svc_lima/bin/lima_token $USER FDS | tr -d '\''\r'\'')"'
-
-# platform doesn't work with pkgsrc's curl libs force it to use
-# the system binary + libs
-function platform() { (
-  export PATH="$OLD_PATH"
-  export LD_LIBRARY_PATH="$OLD_LD_LIBRARY_PATH"
-  command platform "$@"
-)}
 
 # syntax highlighting less
 function cless() {
@@ -163,35 +144,16 @@ function cless() {
 # for p4 we want to intercept vdiff and launch vimdiff instead
 # of using the normal gdiff
 function p4() {
-  # shellcheck disable=2016
-  # we want late expansion
-  local nvimdiff='LD_LIBRARY_PATH="$BBATHA_ROOT/gcc48/lib64:$LD_LIBRARY_PATH" nvim -d'
   # use command p4 when not using p4fds
   case "$*" in
-    vdiff2* ) shift 1; P4DIFF="$nvimdiff" command p4 diff2 "$@" ;;
-    vdiff* ) shift 1; P4DIFF="$nvimdiff" command p4 diff "$@" ;;
+    vdiff2* ) shift 1; P4DIFF="vim -d" command p4 diff2 "$@" ;;
+    vdiff* ) shift 1; P4DIFF="vim -d" command p4 diff "$@" ;;
     diff2* ) shift 1; P4DIFF=colordiff command p4 diff2 -du "$@" ;;
     diff* ) shift 1; P4DIFF=colordiff command p4 diff -du "$@" ;;
     * ) command p4 "$@" ;;
   esac
 }
 
-function ruby-build() {
-  command ruby-build "$1"
-}
-
-# Add our bash completion scripts
-if [[ $PS1 && -f "$BBATHA_ROOT/share/bash-completion/bash_completion" ]]
-then
-  # shellcheck disable=1090
-  # 3rd party script
-  source "$BBATHA_ROOT/share/bash-completion/bash_completion"
-fi
-
-export RUST_SRC_PATH="${HOME}/pkg/src/rust/src"
-
-function update-nvim() {
-  cd "$HOME/sources/neovim" || exit
-  git pull
-  make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX:PATH=$HOME/pkg" install
-}
+# secret tokens
+# shellcheck disable=1090
+. "$HOME/.tokens"

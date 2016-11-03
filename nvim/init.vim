@@ -37,6 +37,7 @@ Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' } " javascript
 " Go omnibus package
 Plug 'fatih/vim-go', { 'for': 'go' }
 
+" SCM
 Plug 'mhinz/vim-signify'
 
 " Motion
@@ -46,8 +47,9 @@ Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 
 " Time savers
 Plug 'AndrewRadev/splitjoin.vim' " Split function lists
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf.vim'
+Plug 'cloudhead/neovim-fuzzy'
 
 " Dev tools
 Plug 'benekastah/neomake' " syntax checker
@@ -242,11 +244,14 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'javascript', 'bash=sh']
 
 "fzf
-noremap <C-p> :Files<CR>
-let g:fzf_layout = { 'down': '~20%' }
+"noremap <C-p> :Files<CR>
+"let g:fzf_layout = { 'down': '~20%' }
+"
+"let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+nnoremap <C-p> :FuzzyOpen<CR>
 
+" Signify
 let g:signify_vcs_list = [ 'git', 'perforce' ]
 
 "" Deoplete
