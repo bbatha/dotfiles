@@ -21,6 +21,7 @@
 [push]
 	default = simple
 	followTags = true
+	followTag = true
 [merge]
 	conflictstyle = diff3
 [apply]
@@ -32,12 +33,12 @@
 	autosetuprebase = always
 [http]
 	sslVerify = true
-  sslCAinfo = /etc/pki/tls/certs/ca-bundle.crt
 [pull]
 	default = simple
 	rebase = true
 [rebase]
 	autosquash = true
+	autoStash = true
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f

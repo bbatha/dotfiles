@@ -42,7 +42,7 @@ export PS2=" "
 # Retain bash history like zsh
 #shopt -s histappend
 export HISTSIZE=100000
-export HISTCONTROL=ignoredups:erasedups
+export HISTCONTROL=ignoredups:erasedups:ignorespace
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 
@@ -81,11 +81,14 @@ then
 
   # rustup
   export PATH="$PATH:$HOME/.cargo/bin"
-  export RUST_SRC_PATH="$HOME/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+  export RUST_SRC_PATH="$HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 
   # Go
-  export GOPATH=$HOME/gocode
-  export PATH=$PATH:$GOPATH/bin
+  export GOPATH="$HOME/go"
+  export PATH="$PATH:$GOPATH/bin"
+  # homebrew go is busted use our own copy for now
+  export GOROOT="$HOME/.local/go"
+  export PATH="$PATH:$GOROOT/bin"
 
   if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
     # shellcheck disable=1090

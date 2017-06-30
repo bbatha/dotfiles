@@ -33,12 +33,14 @@ Plug 'racer-rust/vim-racer', { 'for': 'rust' } " rust
 Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' } " go
 Plug 'c9s/perlomni.vim', { 'for': 'perl', 'do': 'make install' } " Perl
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' } " javascript
+Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' } " ruby
 
 " Go omnibus package
 Plug 'fatih/vim-go', { 'for': 'go' }
 
 " SCM
-Plug 'mhinz/vim-signify'
+" Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
 
 " Motion
 Plug 'bkad/camelcasemotion' " Motion for camelcase words
@@ -47,8 +49,6 @@ Plug 'tpope/vim-repeat' " fix repeat for use with common plugins
 
 " Time savers
 Plug 'AndrewRadev/splitjoin.vim' " Split function lists
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-"Plug 'junegunn/fzf.vim'
 Plug 'cloudhead/neovim-fuzzy'
 
 " Dev tools
@@ -207,6 +207,10 @@ set background=dark
 let mapleader = ' '
 let maplocalleader = '\\'
 
+if exists('&inccomand')
+  set inccommand=split
+endif
+
 ""FACTSET SKELETONS
 ""source /home/fonix/prd_progs/tools/conf/vim/fds.vimrc
 
@@ -292,3 +296,7 @@ inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
 imap <silent><expr><CR> pumvisible() ?
       \ (neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<C-y>")
 			\ : "\<CR>"
+
+augroup filetypedetect
+  au BufRead,BufNewFile Jenkinsfile set filetype=groovy
+augroup end
