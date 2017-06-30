@@ -53,6 +53,7 @@ Plug 'cloudhead/neovim-fuzzy'
 
 " Dev tools
 Plug 'benekastah/neomake' " syntax checker
+Plug 'editorconfig/editorconfig-vim'
 call plug#end()
 
 syntax on
@@ -77,7 +78,6 @@ set matchtime=2
 set matchpairs+=<:>
 
 " backspace behaves 'normally'
-set esckeys
 set ignorecase
 set smartcase
 set magic
