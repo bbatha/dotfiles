@@ -5,23 +5,21 @@
     "editor.lineNumbers": "relative",
     "editor.cursorBlinking": "solid",
     "editor.minimap.enabled": false,
-    //"editor.formatOnSave": true,
     "search.useIgnoreFilesByDefault": true,
     "vim.disableAnnoyingNeovimMessage": true,
     "vim.useSystemClipboard": true,
-    "vim.useSolidBlockCursor": true,
     "vim.enableNeovim": true,
     "vim.textwidth": 100,
+    "rust.rustup": {
+        "toolchain": "stable-x86_64-pc-windows-msvc",
+        "nightlyToolchain": "nightly-x86_64-pc-windows-msvc"
+    },
+    "rust.mode": "rls",
     "rust.rls": {
-        "executable": "rustup",
-        "args": [
-            "run",
-            "nightly",
-            "rls"
-        ],
         "env": {
             "RUST_SRC_PATH": "C:\\Users\\bhbat\\.rustup\\toolchains\\nightly-x86_64-pc-windows-msvc\\lib\\rustlib\\src\\rust\\src\\"
-        }
+        },
+        "useRustfmt": true
     },
     "workbench.colorTheme": "Solarized Dark",
     "idris.executablePath": "C:\\Users\\bhbat\\Downloads\\idris\\idris.exe",
