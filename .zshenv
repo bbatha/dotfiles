@@ -1,36 +1,56 @@
-#export TERM=xterm-256color
+[ -f $HOME/.fzf.zsh ] && source ~/.fzf.zsh
 
-if [ `uname` = "Darwin" ]; then
-  export PATH=/usr/local/bin:/usr/local/sbin:$HOME/local/bin:$HOME/.cabal/bin:$PATH
-	eval `gdircolors ${HOME}/.dir_colors`
-	alias ls='ls -hF -G'
-elif [ `uname -o` = "GNU/Linux" ]; then
-  eval "$(rbenv init -)"
-	eval `dircolors ${HOME}/.dir_colors`
-	alias ls='ls -hF --color=auto'
-elif [ `uname` = "FreeBSD" ]; then
-  eval "$(rbenv init -)"
-  alias ls='ls -GhF'
-  function doall() {
-    sudo "$@"
-    local jails="$(jls | grep -v JID | awk '{ print $1 }')"
-    echo "${jails}" | xargs -I {} sudo jexec {} "$@"
-  }
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/llvm36/lib/
+alias psql-dev="psql -h dev-db.paperspace.io -U postgres -d paperspace"
+alias psql-staging="psql -h staging-db.paperspace.com -U postgres -d paperspace"
+alias psql-prod="psql -h ps-db-prod.cluster-c1xm2pfayrwq.us-east-1.rds.amazonaws.com -p 16309 -U adminps -d paperspace"
+alias psql-dev-logs="psql -h dev-staging-logs-db-cluster.cluster-c1xm2pfayrwq.us-east-1.rds.amazonaws.com -U postgres -d logs_dev"
+alias psql-staging-logs="psql -h dev-staging-logs-db-cluster.cluster-c1xm2pfayrwq.us-east-1.rds.amazonaws.com -U postgres -d logs_staging"
+alias psql-prod-logs="psql -h prod-logs-db-cluster.cluster-c1xm2pfayrwq.us-east-1.rds.amazonaws.com -p 5432 -U postgres -d logs"
+alias psql-psdev="psql -h localhost -U postgres"
+#export HOMEBREW_RABBITMQ="/usr/local/Cellar/rabbitmq/3.7.16/sbin"
+export PROJECT_PATH="$HOME/psdev"
+typeset -U path
+path=(
+  "$HOME/go/bin"
+  "$HOME/.krew/bin"
+  "$HOME/.cargo/bin"
+  $path[@]
+  "$PROJECT_PATH/bin"
+)
+
+export YVM_DIR="$HOME/.yvm"
+[ -r $YVM_DIR/yvm.sh ] && . $YVM_DIR/yvm.sh
+
+source ~/psdev/.rc
+source $HOME/.cargo/env
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
 fi
 
-# set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-# Ubuntu make installation of Ubuntu Make binary symlink
-PATH=/home/bbatha/.local/share/umake/bin:$PATH
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 
-alias vim=nvim
+export PGDATA="$HOME/.pgdata"
+
+alias vim='nvim'
+alias gcloudscp='gcloud compute scp --ssh-key-file=~/.ssh/id_rsa'
+alias less='less -R'
 export EDITOR=nvim
 
+[ -f /usr/local/share/zsh/site-functions ] && source /usr/local/share/zsh/site-functions
 
-export PATH="$HOME/.cargo/bin:$PATH"
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-export CARGO_HOME=$HOME/.cargo
+eval $(ssh-agent)
+ssh-add ~/.ssh/id_rsa
 
-export RUST_SRC_PATH="$HOME/src/rust/src"
+export GOPROXY=https://proxy.golang.org/
+
+#minkube start --vm-driver=hyperkit
+#eval $(minikube docker-env)
+export GOPRIVATE=github.com/Paperspace
+
+alias k=kubectl
+
