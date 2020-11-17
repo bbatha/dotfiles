@@ -65,12 +65,13 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
+bindkey -e
 # Enable Ctrl-x-e to edit command line
 autoload -U edit-command-line
-# Emacs style
+## Emacs style
 zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
+#bindkey '^xe' edit-command-line
+#bindkey '^x^e' edit-command-line
 
 if [ $commands[kubectl] ]; then
   source <(kubectl completion zsh)
