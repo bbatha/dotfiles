@@ -12,7 +12,7 @@ ln -sf "$DOTFILES/.zshenv" "$HOME/."
 ln -sf "$DOTFILES/.zshrc" "$HOME/."
 ln -sf "$DOTFILES/.zsh_plugins.txt" "$HOME/."
 if [ ! -d "$HOME/.config/nvim" ]; then
-  ln -sf "$DOTFILES/nvim/" "$HOME/config/nvim"
+  ln -sf "$DOTFILES/nvim/" "$HOME/.config/nvim"
 fi
 
 sudo apt install tmux zsh shellcheck
