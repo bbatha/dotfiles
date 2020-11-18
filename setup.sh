@@ -18,7 +18,7 @@ fi
 sudo apt install tmux zsh shellcheck
 sudo snap install --classic nvim
 
-if [ "$(which rustup)" = "rustup not found" ]; then
+if ! which rustup; then
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
   cargo install fre
 fi
@@ -32,3 +32,4 @@ if [ "$SHELL" != "/usr/bin/zsh" ]; then
 fi
 
 brew install antibody
+pip3 install neovim
