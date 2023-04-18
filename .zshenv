@@ -1,5 +1,3 @@
-[ -f $HOME/.fzf.zsh ] && source ~/.fzf.zsh
-
 alias psql-dev="psql -h dev-db.paperspace.io -U postgres -d paperspace"
 alias psql-staging="psql -h staging-db.paperspace.com -U postgres -d paperspace"
 alias psql-prod="psql -h ps-db-prod.cluster-c1xm2pfayrwq.us-east-1.rds.amazonaws.com -p 16309 -U adminps -d paperspace"
@@ -21,8 +19,8 @@ path=(
 export YVM_DIR="$HOME/.yvm"
 [ -r $YVM_DIR/yvm.sh ] && . $YVM_DIR/yvm.sh
 
-source ~/psdev/.rc
-source $HOME/.cargo/env
+. ~/psdev/.rc
+. $HOME/.cargo/env
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
@@ -54,3 +52,7 @@ export GOPRIVATE=github.com/Paperspace
 
 alias k=kubectl
 
+#if [ -d "$HOME/.asdf" ]; then
+#  . "$HOME/.asdf/asdf.sh"
+#  . "$HOME/.asdf/completions/asdf.bash"
+#fi

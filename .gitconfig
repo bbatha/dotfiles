@@ -10,6 +10,7 @@
 [diff]
 	tool = vimdiff
 	compactionHeuristic = true
+	external = difft
 [difftool]
 	prompt = false
 [color]
@@ -22,6 +23,7 @@
 	default = simple
 	followTags = true
 	followTag = true
+	autoSetupRemote = true
 [merge]
 	conflictstyle = diff3
 [apply]
@@ -45,3 +47,5 @@
 	required = true
 [submodule]
 	fetchJobs = 8
+[url "git@github.com:"]
+	insteadOf = https://github.com/
