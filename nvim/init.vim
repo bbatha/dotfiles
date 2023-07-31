@@ -188,7 +188,7 @@ endfunction
 " Run :FixWhitespace to remove end of line white space
 command! -range=% FixWhitespace call <SID>FixWhitespace(<line1>,<line2>)
 
-let g:airline_theme = 'powerlineish'
+""let g:airline_theme = 'powerlineish'
 
 if has("gui_running")
   set guioptions=ac
@@ -196,7 +196,7 @@ if has("gui_running")
   set lines=60
   set base16colorspace=256
 else
-  let g:airline_powerline_fonts = 1
+  "let g:airline_powerline_fonts = 1
 endif
 
 let base16colorspace=256
