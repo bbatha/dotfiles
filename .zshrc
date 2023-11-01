@@ -1,5 +1,6 @@
-source <(antibody init)
-antibody bundle < ~/.zsh_plugins.txt
+source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+antidote load
+source ~/.zsh_plugins.zsh
 
 autoload -Uz vcs_info
 setopt prompt_subst
@@ -37,7 +38,7 @@ typeset -gaU chpwd_functions
 chpwd_functions+=fre_chpwd
 
 fpath+=~/.zfunc
-#autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit
 setopt COMPLETE_ALIASES
 zstyle ':completion:*' menu select
 zstyle ':completion::complete:*' gain-privileges 1
@@ -86,3 +87,18 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 export PNPM_HOME="/home/paperspace/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+
+bindkey    "^[[3~"          delete-char
+bindkey    "^[3;5~"         delete-char
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/bbatha/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/bbatha/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/bbatha/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/bbatha/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Paperspace
+export PAPERSPACE_INSTALL="/Users/bbatha/.paperspace"
+export PATH="$PAPERSPACE_INSTALL/bin:$PATH"

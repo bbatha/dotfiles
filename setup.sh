@@ -10,7 +10,7 @@ ln -sf "$DOTFILES/.riplrc" "$HOME/."
 ln -sf "$DOTFILES/.tmux.conf" "$HOME/."
 ln -sf "$DOTFILES/.zshenv" "$HOME/."
 ln -sf "$DOTFILES/.zshrc" "$HOME/."
-ln -sf "$DOTFILES/.zsh_plugins.txt" "$HOME/."
+ln -sf "$DOTFILES/.zsh_plugins.zsh" "$HOME/."
 ln -sf "$DOTFILES/.psqlrc" "$HOME/."
 if [ ! -d "$HOME/.config/nvim" ]; then
   ln -sf "$DOTFILES/nvim/" "$HOME/.config/nvim"
@@ -33,5 +33,5 @@ if [ "$SHELL" != "/usr/bin/zsh" ]; then
   chsh -s /usr/bin/zsh
 fi
 
-brew install antibody
+brew install antidote
 pip3 install neovim
