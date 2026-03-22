@@ -25,6 +25,12 @@ if ! which rustup; then
   cargo install difft
 fi
 
+rustup update stable
+
+if ! which tree-sitter; then
+  cargo install --locked tree-sitter-cli
+fi
+
 if [ ! -d ~/.tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
